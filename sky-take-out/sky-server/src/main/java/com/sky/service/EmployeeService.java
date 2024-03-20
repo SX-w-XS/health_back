@@ -25,4 +25,25 @@ public interface EmployeeService {
     * @return: com.sky.result.PageResult
     **/
     PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+   /**
+    * @description:启用禁用
+    * @author: X_X
+    * @param: [status, id]
+    * @return: void
+    **/
+    void startOrStop(Integer status, Long id);
+    /**
+     * @description: 根据id查询员工信息
+     * @author: X_X
+     * @param: [id]
+     * @return: com.sky.entity.Employee
+     **/
+    Employee getById(Long id);
+    /**
+     * @description: 更新员工信息
+     * @author: X_X
+     * @param: [employeeDTO]
+     * @return: void
+     **/
+    void update(EmployeeDTO employeeDTO);
 }

@@ -97,4 +97,46 @@ public class EmployeeController {
        PageResult pageResult= employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
     }
+    /**
+     * @description:启用禁用员工账号
+     * @author: X_X
+     * @param: [status, id]
+     * @return: com.sky.result.Result
+     **/
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用禁用员工账号")
+    public Result  startOrStop(@PathVariable Integer status,Long id){
+        log.info("启用禁用:{},{}",status,id);
+        employeeService.startOrStop(status,id);
+        return Result.success();
+    }
+    /**
+     * @description: 员工查询
+     * @author: X_X
+     * @param: [id]
+     * @return: com.sky.result.Result<com.sky.entity.Employee>
+     **/
+   @GetMapping("/{id}")
+   @ApiOperation("根据id查询信息")
+    public Result<Employee> getById(@PathVariable Long id){
+        log.info("根据id查询信息：{}",id);
+       Employee employee= employeeService.getById(id);
+
+        return Result.success(employee);
+    }
+    /**
+     * @description:根据id修改信息
+     * @author: X_X
+     * @param: [employeeDTO]
+     * @return: com.sky.result.Result
+     **/
+    @PutMapping
+    @ApiOperation("更新员工信息")
+    public  Result update(@RequestBody EmployeeDTO employeeDTO){
+        log.info("根据id修改信息：{}",employeeDTO);
+        employeeService.update(employeeDTO);
+
+        return Result.success();
+    }
+
 }

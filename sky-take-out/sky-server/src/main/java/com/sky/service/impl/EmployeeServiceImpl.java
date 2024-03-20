@@ -70,7 +70,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 * */
     @Override
     public void save(EmployeeDTO employeeDTO) {
-        System.out.println("当前线程id"+Thread.currentThread().getId());
+
         Employee employee=new Employee();
         //对象属性拷贝
         BeanUtils.copyProperties(employeeDTO,employee);
@@ -79,12 +79,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         //设置密码
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
         ///设置时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+      //  employee.setCreateTime(LocalDateTime.now());
+     //   employee.setUpdateTime(LocalDateTime.now());
         //设置修改人和创建人
 
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+       // employee.setCreateUser(BaseContext.getCurrentId());
+       // employee.setUpdateUser(BaseContext.getCurrentId());
         //调用持久层
         employeeMapper.insert(employee);
     }
@@ -106,5 +106,51 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return new PageResult(total,records);
     }
+  /**
+   * @description:启用禁用员工账号
+   * @author: X_X
+   * @param: [status, id]
+   * @return: void
+   **/
+    @Override
+    public void startOrStop(Integer status, Long id) {
+       /* Employee employee = new Employee();
+        employee.setStatus(status);
+        employee.setId(id);*/
+        Employee employee = Employee.builder().status(status).id(id).build();
+
+        employeeMapper.update(employee);
+    }
+
+   /**
+    * @description: 使用id查询用户
+    * @author: X_X
+    * @param: [id]
+    * @return: com.sky.entity.Employee
+    **/
+    @Override
+    public Employee getById(Long id) {
+        Employee employee= employeeMapper.getById(id);
+        employee.setPassword("****");
+        return employee;
+
+    }
+    /**
+     * @description:使用id修改用户
+     * @author: X_X
+     * @param: [employeeDTO]
+     * @return: void
+     **/
+    @Override
+    public void update(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);
+
+       // employee.setUpdateTime(LocalDateTime.now());
+       // employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.update(employee);
+
+    }
+
 
 }
