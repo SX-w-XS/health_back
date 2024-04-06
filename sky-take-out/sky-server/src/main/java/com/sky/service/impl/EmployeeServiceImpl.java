@@ -103,7 +103,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         long total= page.getTotal();
         List<Employee> records = page.getResult();
 
-
         return new PageResult(total,records);
     }
   /**

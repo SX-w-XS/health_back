@@ -25,7 +25,12 @@ public interface EmployeeMapper {
             "(#{name},#{username},#{password},#{phone},#{sex},#{idNumber},#{createTime},#{updateTime},#{createUser},#{updateUser},#{status})")
     @AutoFill(value = OperationType.INSERT)
     void insert(Employee employee);
-
+/**
+ * @description:员工分页
+ * @author: X_X
+ * @param: [employeePageQueryDTO]
+ * @return: com.github.pagehelper.Page<com.sky.entity.Employee>
+ **/
     Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
    
     /**

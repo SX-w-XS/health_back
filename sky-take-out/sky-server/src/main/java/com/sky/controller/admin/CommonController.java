@@ -40,20 +40,15 @@ public class CommonController {
      @ApiOperation("文件上传")
     public Result<String> upload(MultipartFile file){
          log.info("文件上传：{}",file);
-         try {
-             //原始文件名
-             String originalFilename = file.getOriginalFilename();
-             //截取文件后缀
-             String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-             //构建文件名称
-             String FileName = UUID.randomUUID().toString() + extension;
+         //原始文件名
+         String originalFilename = file.getOriginalFilename();
+         //截取文件后缀
+         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+         //构建文件名称
+         String FileName = UUID.randomUUID().toString() + extension;
 
-             String filePath = aliOssUtil.upload(file.getBytes(), FileName);
-             return  Result.success(filePath);
-         } catch (IOException e) {
-             log.error("文件上传失败:{}",e);
-         }
-         return Result.error(MessageConstant.UPLOAD_FAILED);
+         //  String filePath = aliOssUtil.upload(file.getBytes(), FileName);
+         return  Result.success(FileName);
      }
 
 }

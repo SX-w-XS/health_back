@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @BelongsProject: sky_test
  * @BelongsPackage: com.sky.config
  * @Author: X_X
- * @Description: TODO
+ * @Description: 阿里云配置
  * @Version: 1.0
  */
 @Configuration
