@@ -1,0 +1,9 @@
+health:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: localhost
+    port: 3306
+    database: health
+    username: root
+    password: root
+
