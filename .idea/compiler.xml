@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="health-common" />
         <module name="health-pojo" />
+        <module name="mybatis_generator" />
         <module name="health-server" />
       </profile>
     </annotationProcessing>
@@ -21,6 +22,7 @@
       <module name="health-common" options="-parameters" />
       <module name="health-pojo" options="-parameters" />
       <module name="health-server" options="-parameters" />
+      <module name="mybatis_generator" options="-parameters" />
     </option>
   </component>
 </project>

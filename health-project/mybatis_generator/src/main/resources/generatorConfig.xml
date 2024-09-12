@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="config.properties"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+            <property name="caseSensitive" value="true"/>
+        </plugin>
+
+        <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.user}"
+                        password="${jdbc.password}">
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="${package.name}.entities" targetProject="src/main/java"/>
+
+        <sqlMapGenerator targetPackage="${package.name}.mapper" targetProject="src/main/java"/>
+
+        <javaClientGenerator targetPackage="${package.name}.mapper" targetProject="src/main/java" type="XMLMAPPER"/>
+
+        <table tableName="chronic_disease_knowledge" domainObjectName="DiseaseKnowledge">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+        <table tableName="consult_record" domainObjectName="ConsultRecord">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+        <table tableName="cure" domainObjectName="Cure">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+        <table tableName="doctor" domainObjectName="Doctor">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+        <table tableName="h_user" domainObjectName="User">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+        <table tableName="medical_record" domainObjectName="MedicalRecord">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+        <table tableName="medical_use" domainObjectName="MedicalUse">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+        <table tableName="medicine" domainObjectName="Medicine">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+        <table tableName="message" domainObjectName="Message">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+    </context>
+</generatorConfiguration>
