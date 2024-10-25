@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.health.mapper.CureMapper">
+  <resultMap id="BaseResultMap" type="com.health.entities.Cure">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="cure_id" jdbcType="INTEGER" property="cureId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="date" jdbcType="TIMESTAMP" property="date" />
+    <result column="disease_id" jdbcType="INTEGER" property="diseaseId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.health.entities.Cure">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="drug_advice" jdbcType="LONGVARCHAR" property="drugAdvice" />
+    <result column="diet_advice" jdbcType="LONGVARCHAR" property="dietAdvice" />
+    <result column="exercise_advice" jdbcType="LONGVARCHAR" property="exerciseAdvice" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    cure_id, user_id, date, disease_id
+  </sql>
+  <sql id="Blob_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    drug_advice, diet_advice, exercise_advice
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.health.entities.CureExample" resultMap="ResultMapWithBLOBs">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cure
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.health.entities.CureExample" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cure
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.health.entities.CureExample">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from cure
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <select id="countByExample" parameterType="com.health.entities.CureExample" resultType="java.lang.Long">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select count(*) from cure
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update cure
+    <set>
+      <if test="row.cureId != null">
+        cure_id = #{row.cureId,jdbcType=INTEGER},
+      </if>
+      <if test="row.userId != null">
+        user_id = #{row.userId,jdbcType=INTEGER},
+      </if>
+      <if test="row.date != null">
+        date = #{row.date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.diseaseId != null">
+        disease_id = #{row.diseaseId,jdbcType=INTEGER},
+      </if>
+      <if test="row.drugAdvice != null">
+        drug_advice = #{row.drugAdvice,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="row.dietAdvice != null">
+        diet_advice = #{row.dietAdvice,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="row.exerciseAdvice != null">
+        exercise_advice = #{row.exerciseAdvice,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update cure
+    set cure_id = #{row.cureId,jdbcType=INTEGER},
+      user_id = #{row.userId,jdbcType=INTEGER},
+      date = #{row.date,jdbcType=TIMESTAMP},
+      disease_id = #{row.diseaseId,jdbcType=INTEGER},
+      drug_advice = #{row.drugAdvice,jdbcType=LONGVARCHAR},
+      diet_advice = #{row.dietAdvice,jdbcType=LONGVARCHAR},
+      exercise_advice = #{row.exerciseAdvice,jdbcType=LONGVARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update cure
+    set cure_id = #{row.cureId,jdbcType=INTEGER},
+      user_id = #{row.userId,jdbcType=INTEGER},
+      date = #{row.date,jdbcType=TIMESTAMP},
+      disease_id = #{row.diseaseId,jdbcType=INTEGER}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

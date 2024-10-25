@@ -5,6 +5,7 @@ import lombok.Getter;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Date;
  */
 @Getter
 @Table(name = "h_user")
-public class UserDTO {
+public class UserDTO implements Serializable {
     /**
      * 用户ID
      * -- GETTER --

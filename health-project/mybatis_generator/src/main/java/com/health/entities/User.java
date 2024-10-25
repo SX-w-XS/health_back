@@ -1,17 +1,14 @@
-package com.health.vo;
+package com.health.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 /**
  * 表名：h_user
  * 表注释：用户表
 */
 @Table(name = "h_user")
-public class UserVO  implements Serializable {
+public class User {
     /**
      * 用户ID
      */
@@ -30,7 +27,10 @@ public class UserVO  implements Serializable {
     @Column(name = "user_img")
     private String userImg;
 
-
+    /**
+     * 密码
+     */
+    private String password;
 
     /**
      * 用户身份证号
@@ -81,9 +81,15 @@ public class UserVO  implements Serializable {
      */
     private Integer status;
 
+    /**
+     * 疾病id
+     */
     @Column(name = "disease_id")
-    private Integer diseaseId;
+    private String diseaseId;
 
+    /**
+     * 医生id
+     */
     @Column(name = "doctor_id")
     private String doctorId;
 
@@ -141,7 +147,23 @@ public class UserVO  implements Serializable {
         this.userImg = userImg;
     }
 
+    /**
+     * 获取密码
+     *
+     * @return password - 密码
+     */
+    public String getPassword() {
+        return password;
+    }
 
+    /**
+     * 设置密码
+     *
+     * @param password 密码
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     /**
      * 获取用户身份证号
@@ -306,28 +328,36 @@ public class UserVO  implements Serializable {
     }
 
     /**
-     * @return diseaseId
+     * 获取疾病id
+     *
+     * @return diseaseId - 疾病id
      */
-    public Integer getDiseaseId() {
+    public String getDiseaseId() {
         return diseaseId;
     }
 
     /**
-     * @param diseaseId
+     * 设置疾病id
+     *
+     * @param diseaseId 疾病id
      */
-    public void setDiseaseId(Integer diseaseId) {
+    public void setDiseaseId(String diseaseId) {
         this.diseaseId = diseaseId;
     }
 
     /**
-     * @return doctorId
+     * 获取医生id
+     *
+     * @return doctorId - 医生id
      */
     public String getDoctorId() {
         return doctorId;
     }
 
     /**
-     * @param doctorId
+     * 设置医生id
+     *
+     * @param doctorId 医生id
      */
     public void setDoctorId(String doctorId) {
         this.doctorId = doctorId;

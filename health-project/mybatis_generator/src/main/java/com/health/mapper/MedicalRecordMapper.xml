@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.health.mapper.MedicalRecordMapper">
+  <resultMap id="BaseResultMap" type="com.health.entities.MedicalRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="record_id" jdbcType="INTEGER" property="recordId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="doctor_id" jdbcType="INTEGER" property="doctorId" />
+    <result column="diagnostic_time" jdbcType="TIMESTAMP" property="diagnosticTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.health.entities.MedicalRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="past_medical_history" jdbcType="LONGVARCHAR" property="pastMedicalHistory" />
+    <result column="personal_history" jdbcType="LONGVARCHAR" property="personalHistory" />
+    <result column="medication_history" jdbcType="LONGVARCHAR" property="medicationHistory" />
+    <result column="diagnostic" jdbcType="LONGVARCHAR" property="diagnostic" />
+    <result column="treatment" jdbcType="LONGVARCHAR" property="treatment" />
+    <result column="check_result" jdbcType="LONGVARCHAR" property="checkResult" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    record_id, user_id, doctor_id, diagnostic_time
+  </sql>
+  <sql id="Blob_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    content, past_medical_history, personal_history, medication_history, diagnostic, 
+    treatment, check_result
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.health.entities.MedicalRecordExample" resultMap="ResultMapWithBLOBs">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from medical_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.health.entities.MedicalRecordExample" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from medical_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.health.entities.MedicalRecordExample">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    delete from medical_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <select id="countByExample" parameterType="com.health.entities.MedicalRecordExample" resultType="java.lang.Long">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    select count(*) from medical_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update medical_record
+    <set>
+      <if test="row.recordId != null">
+        record_id = #{row.recordId,jdbcType=INTEGER},
+      </if>
+      <if test="row.userId != null">
+        user_id = #{row.userId,jdbcType=INTEGER},
+      </if>
+      <if test="row.doctorId != null">
+        doctor_id = #{row.doctorId,jdbcType=INTEGER},
+      </if>
+      <if test="row.diagnosticTime != null">
+        diagnostic_time = #{row.diagnosticTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.content != null">
+        content = #{row.content,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="row.pastMedicalHistory != null">
+        past_medical_history = #{row.pastMedicalHistory,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="row.personalHistory != null">
+        personal_history = #{row.personalHistory,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="row.medicationHistory != null">
+        medication_history = #{row.medicationHistory,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="row.diagnostic != null">
+        diagnostic = #{row.diagnostic,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="row.treatment != null">
+        treatment = #{row.treatment,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="row.checkResult != null">
+        check_result = #{row.checkResult,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update medical_record
+    set record_id = #{row.recordId,jdbcType=INTEGER},
+      user_id = #{row.userId,jdbcType=INTEGER},
+      doctor_id = #{row.doctorId,jdbcType=INTEGER},
+      diagnostic_time = #{row.diagnosticTime,jdbcType=TIMESTAMP},
+      content = #{row.content,jdbcType=LONGVARCHAR},
+      past_medical_history = #{row.pastMedicalHistory,jdbcType=LONGVARCHAR},
+      personal_history = #{row.personalHistory,jdbcType=LONGVARCHAR},
+      medication_history = #{row.medicationHistory,jdbcType=LONGVARCHAR},
+      diagnostic = #{row.diagnostic,jdbcType=LONGVARCHAR},
+      treatment = #{row.treatment,jdbcType=LONGVARCHAR},
+      check_result = #{row.checkResult,jdbcType=LONGVARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    update medical_record
+    set record_id = #{row.recordId,jdbcType=INTEGER},
+      user_id = #{row.userId,jdbcType=INTEGER},
+      doctor_id = #{row.doctorId,jdbcType=INTEGER},
+      diagnostic_time = #{row.diagnosticTime,jdbcType=TIMESTAMP}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>
