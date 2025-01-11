@@ -13,6 +13,7 @@ import com.health.utils.JwtUtil;
 import com.health.vo.UserLoginVO;
 import com.health.vo.UserVO;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @Slf4j
-@Api(tags = "员工相关接口")
+@Api(tags = "用户相关接口")
 public class UserController {
     @Autowired
     private JwtProperties jwtProperties;
@@ -45,6 +46,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/login")
+    @ApiOperation(value = "用户登录")
     public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
         log.info("用户登录：{}", userLoginDTO);
         User user= userService.login(userLoginDTO);
@@ -64,6 +66,7 @@ public class UserController {
     }
 
     @PostMapping("/logout")
+    @ApiOperation(value = "用户登出")
     public Result<String> logout(@RequestBody UserLoginDTO userLoginDTO) {
         log.info("用户登出：{}", userLoginDTO);
         BaseContext.removeCurrentId();
@@ -71,6 +74,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
+    @ApiOperation(value = "用户注册")
     public Result register(@RequestBody UserSignUpDTO UserSignUpDTO) {
         log.info("用户注册：{}", UserSignUpDTO);
         userService.register(UserSignUpDTO);
@@ -78,6 +82,7 @@ public class UserController {
     }
 
     @PostMapping("/queryById")
+    @ApiOperation(value = "根据id查询用户信息")
     public Result<UserVO> queryById(String id) {
          log.info("查询用户信息：{}", id);
          if (userService.queryById(id)==null) {
@@ -86,6 +91,7 @@ public class UserController {
         return Result.success(userService.queryById(id));
          }
     @PostMapping("/update")
+    @ApiOperation(value = "更新用户信息")
     public Result update(@RequestBody UserDTO user) {
         log.info("更新用户信息：{}", user);
         userService.update(user);

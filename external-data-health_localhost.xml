@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <object-set>
+    <table path="health.consult_record">
+      <table path="health.doctor" name="doctor_id" from="doctor_id" to="doctor_id"/>
+      <table path="health.h_user" name="h_user_id" from="user_id" to="user_id"/>
+    </table>
+    <table path="health.cure">
+      <table path="health.chronic_disease_knowledge" name="disease_id" from="disease_id" to="disease_id"/>
+      <table path="health.h_user" name="user_id" from="user_id" to="user_id"/>
+    </table>
+    <table path="health.h_user">
+      <table path="health.chronic_disease_knowledge" name="disease_id" from="disease_id" to="disease_id"/>
+      <table path="health.doctor" name="doctor_id" from="doctor_id" to="doctor_id"/>
+    </table>
+    <table path="health.medical_record">
+      <table path="health.doctor" name="doctor_id" from="doctor_id" to="doctor_id"/>
+      <table path="health.h_user" name="user_id" from="user_id" to="user_id"/>
+    </table>
+    <table path="health.medical_use">
+      <table path="health.h_user" name="user_id" from="user_id" to="user_id"/>
+      <table path="health.medical_record" name="record_id" from="record_id" to="record_id"/>
+      <table path="health.medicine" name="medicine_id" from="medicine_id" to="medicine_id"/>
+    </table>
+    <table path="health.medicine">
+      <table path="health.chronic_disease_knowledge" name="disease_id" from="disease_id" to="disease_id"/>
+    </table>
+  </object-set>
+</data>

@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
+//建议 分类 存库  建议库（数据库）
 /**
  * @BelongsProject: sky_test
  * @BelongsPackage: com.health.service.impl
@@ -135,11 +135,14 @@ public class PredictServiceImpl implements PredictService {
     {
         PMML pmml = new PMML();
         InputStream inputStream = null;
-        try
-        {
-            inputStream = Files.newInputStream(Paths.get("E:\\idea\\test\\health-project\\health-server\\src\\main\\resources\\template\\diabetes_rf_model.pmml"));
-        }catch(IOException e)
-        {
+        try {
+            // 构建相对路径，这里假设相对当前类所在的包路径往上找，找到resources目录下的template目录中的文件
+            String relativePath = "../resources/template/diabetes_rf_model.pmml";
+             inputStream = Files.newInputStream(Paths.get(relativePath));
+            // 这里可以继续后续对inputStream的操作，比如使用PMML相关库来加载模型等
+            // 示例中暂时只是获取到了输入流，用完后记得关闭流
+            inputStream.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         if(inputStream == null){
