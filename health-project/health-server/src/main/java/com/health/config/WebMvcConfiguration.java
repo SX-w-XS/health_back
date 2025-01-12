@@ -65,7 +65,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .groupName("管理端接口")
                 .apiInfo(apiInfo)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.health.controller.admin"))
+                .apis(RequestHandlerSelectors.basePackage("com.health.controller.common"))
                 .paths(PathSelectors.any())
                 .build();
         return docket;

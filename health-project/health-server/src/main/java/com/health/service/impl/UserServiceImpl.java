@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @BelongsProject: sky_test
@@ -55,13 +56,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(UserSignUpDTO userSignUpDTO) {
+        //判断是否存在相同的用户名
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andUsernameEqualTo(userSignUpDTO.getUsername());
+        List<User> users = userMapper.selectByExample(userExample);
+        if(users != null && users.size() > 0){
         String password = userSignUpDTO.getPassword();
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         User user = new User();
         BeanUtils.copyProperties(userSignUpDTO,user);
         user.setPassword(password);
-        userMapper.insert(user);
-    }
+        userMapper.insert(user);}
+        else {
+             throw new AccountNotFoundException(MessageConstant.ACCOUNT_FOUND);
+        }
+        }
+
 
     @Override
     public UserVO queryById(String id) {

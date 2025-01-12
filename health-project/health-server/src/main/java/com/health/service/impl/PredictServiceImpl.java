@@ -137,8 +137,7 @@ public class PredictServiceImpl implements PredictService {
         InputStream inputStream = null;
         try {
             // 构建相对路径，这里假设相对当前类所在的包路径往上找，找到resources目录下的template目录中的文件
-            String relativePath = "../resources/template/diabetes_rf_model.pmml";
-             inputStream = Files.newInputStream(Paths.get(relativePath));
+             inputStream = PredictServiceImpl.class.getClassLoader().getResourceAsStream("template/diabetes_rf_model.pmml");
             // 这里可以继续后续对inputStream的操作，比如使用PMML相关库来加载模型等
             // 示例中暂时只是获取到了输入流，用完后记得关闭流
             inputStream.close();

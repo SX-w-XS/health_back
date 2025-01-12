@@ -18,7 +18,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class UserSignUpDTO  implements Serializable {
     private String nickname;
-    private String userImg;
     private String password;
     private String phone;
     private String email;
