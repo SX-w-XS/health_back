@@ -13,7 +13,7 @@ import java.util.Date;
  * 表注释：用户表
  */
 @Getter
-@Table(name = "user")
+@Table(name = "h_user")
 public class UserDTO implements Serializable {
     /**
      * 用户ID
