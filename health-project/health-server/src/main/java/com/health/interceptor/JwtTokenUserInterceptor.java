@@ -40,7 +40,10 @@ public class JwtTokenUserInterceptor implements HandlerInterceptor {
             //当前拦截到的不是动态方法，直接放行
             return true;
         }
-
+        //如果是注册、登录接口，直接放行
+        if ("/user/login".equals(request.getRequestURI()) || "/user/register".equals(request.getRequestURI())) {
+            return true;
+        }
         //1、从请求头中获取令牌
         String token = request.getHeader(jwtProperties.getUserTokenName());
 
