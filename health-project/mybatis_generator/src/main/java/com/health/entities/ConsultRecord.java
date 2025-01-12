@@ -19,8 +19,8 @@ public class ConsultRecord {
     /**
      * 用户ID
      */
-    @Column(name = "h_user_id")
-    private Integer hUserId;
+    @Column(name = "user_id")
+    private Integer userId;
 
     /**
      * 医生ID
@@ -65,19 +65,19 @@ public class ConsultRecord {
     /**
      * 获取用户ID
      *
-     * @return hUserId - 用户ID
+     * @return userId - 用户ID
      */
-    public Integer gethUserId() {
-        return hUserId;
+    public Integer getUserId() {
+        return userId;
     }
 
     /**
      * 设置用户ID
      *
-     * @param hUserId 用户ID
+     * @param userId 用户ID
      */
-    public void sethUserId(Integer hUserId) {
-        this.hUserId = hUserId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     /**

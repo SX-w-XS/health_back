@@ -6,7 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="consultation_id" jdbcType="INTEGER" property="consultationId" />
-    <result column="h_user_id" jdbcType="INTEGER" property="hUserId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="doctor_id" jdbcType="INTEGER" property="doctorId" />
     <result column="consult_date" jdbcType="TIMESTAMP" property="consultDate" />
     <result column="state" jdbcType="INTEGER" property="state" />
@@ -85,7 +85,7 @@
     <!--
       WARNING - @mbg.generated
     -->
-    consultation_id, h_user_id, doctor_id, consult_date, state
+    consultation_id, user_id, doctor_id, consult_date, state
   </sql>
   <sql id="Blob_Column_List">
     <!--
@@ -156,8 +156,8 @@
       <if test="row.consultationId != null">
         consultation_id = #{row.consultationId,jdbcType=INTEGER},
       </if>
-      <if test="row.hUserId != null">
-        h_user_id = #{row.hUserId,jdbcType=INTEGER},
+      <if test="row.userId != null">
+        user_id = #{row.userId,jdbcType=INTEGER},
       </if>
       <if test="row.doctorId != null">
         doctor_id = #{row.doctorId,jdbcType=INTEGER},
@@ -182,7 +182,7 @@
     -->
     update consult_record
     set consultation_id = #{row.consultationId,jdbcType=INTEGER},
-      h_user_id = #{row.hUserId,jdbcType=INTEGER},
+      user_id = #{row.userId,jdbcType=INTEGER},
       doctor_id = #{row.doctorId,jdbcType=INTEGER},
       consult_date = #{row.consultDate,jdbcType=TIMESTAMP},
       state = #{row.state,jdbcType=INTEGER},
@@ -197,7 +197,7 @@
     -->
     update consult_record
     set consultation_id = #{row.consultationId,jdbcType=INTEGER},
-      h_user_id = #{row.hUserId,jdbcType=INTEGER},
+      user_id = #{row.userId,jdbcType=INTEGER},
       doctor_id = #{row.doctorId,jdbcType=INTEGER},
       consult_date = #{row.consultDate,jdbcType=TIMESTAMP},
       state = #{row.state,jdbcType=INTEGER}

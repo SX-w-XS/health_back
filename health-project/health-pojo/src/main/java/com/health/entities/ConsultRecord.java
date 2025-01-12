@@ -7,6 +7,7 @@ import java.util.Date;
 
 /**
  * 表名：consult_record
+ * 表注释：记录表
 */
 @Table(name = "consult_record")
 public class ConsultRecord {
