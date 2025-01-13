@@ -61,6 +61,7 @@ public class UserController {
 
         UserLoginVO userLoginVO = new UserLoginVO();
         BeanUtils.copyProperties(user, userLoginVO);
+        userLoginVO.setUserId(user.getUserId());
         userLoginVO.setToken(token);
         return Result.success(userLoginVO);
     }
