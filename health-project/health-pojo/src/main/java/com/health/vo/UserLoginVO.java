@@ -23,13 +23,13 @@ import java.io.Serializable;
 @ApiModel(description = "员工登录返回的数据格式")
 public class UserLoginVO implements Serializable {
     @ApiModelProperty("主键值")
-    private Long id;
+    private Long userId;
 
     @ApiModelProperty("用户名")
-    private String userName;
+    private String username;
 
     @ApiModelProperty("姓名")
-    private String name;
+    private String nickname;
 
     @ApiModelProperty("用户头像")
     private String userImg;
