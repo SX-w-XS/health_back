@@ -6,6 +6,7 @@ import com.health.vo.PredictVO;
 import org.dmg.pmml.FieldName;
 import org.dmg.pmml.PMML;
 import org.jpmml.evaluator.*;
+import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import java.util.Map;
  * @Description: TODO
  * @Version: 1.0
  */
+@Service
 public class PredictServiceImpl implements PredictService {
     @Override
     public PredictVO predict(UserPredictDTO predictDTO) {
@@ -135,15 +137,9 @@ public class PredictServiceImpl implements PredictService {
     {
         PMML pmml = new PMML();
         InputStream inputStream = null;
-        try {
-            // 构建相对路径，这里假设相对当前类所在的包路径往上找，找到resources目录下的template目录中的文件
-             inputStream = PredictServiceImpl.class.getClassLoader().getResourceAsStream("template/diabetes_rf_model.pmml");
-            // 这里可以继续后续对inputStream的操作，比如使用PMML相关库来加载模型等
-            // 示例中暂时只是获取到了输入流，用完后记得关闭流
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // 构建相对路径，这里假设相对当前类所在的包路径往上找，找到resources目录下的template目录中的文件
+        inputStream = PredictServiceImpl.class.getClassLoader().getResourceAsStream("template/diabetes_rf_model.pmml");
+
         if(inputStream == null){
             return null;
         }
@@ -160,6 +156,7 @@ public class PredictServiceImpl implements PredictService {
             //关闭输入流
             try {
                 is.close();
+                inputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
