@@ -1,5 +1,6 @@
 package com.health.service.impl;
 
+import com.health.dto.UserPredictDMDTO;
 import com.health.dto.UserPredictDTO;
 import com.health.service.PredictService;
 import com.health.vo.PredictVO;
@@ -125,7 +126,12 @@ public class PredictServiceImpl implements PredictService {
         return predictVO;
     }
 
-     public  void get(){
+    @Override
+    public PredictVO predictDM(UserPredictDMDTO predictDMDTO) {
+        return null;
+    }
+
+    public  void get(){
          Evaluator evaluator = loadPmml();
          List<InputField> inputFields = evaluator.getInputFields();
          for (InputField inputField : inputFields) {
