@@ -167,5 +167,7 @@ public class PredictServiceImpl implements PredictService {
         return evaluator;
     }
 
+   public void DMPredict( ){
 
+   }
 }

@@ -2,6 +2,7 @@ package com.health.controller.user;
 
 import com.health.context.BaseContext;
 import com.health.dto.UserLoginDTO;
+import com.health.dto.UserPredictDMDTO;
 import com.health.dto.UserPredictDTO;
 import com.health.result.Result;
 import com.health.service.PredictService;
@@ -37,6 +38,14 @@ public class PredictController {
     public Result<PredictVO> predictCVD(@RequestBody UserPredictDTO userPredictDTO) {
         log.info("心血管疾病：{}", userPredictDTO);
         PredictVO predict = predictService.predict(userPredictDTO);
+        return Result.success(predict);
+    }
+
+    @PostMapping("/DM")
+    @ApiOperation(value = "糖尿病")
+    public  Result<PredictVO> predictDM(@RequestBody UserPredictDMDTO userPredictDMDTO) {
+        log.info("糖尿病：{}", userPredictDMDTO);
+        PredictVO predict = predictService.predictDM(userPredictDMDTO);
         return Result.success(predict);
     }
 }

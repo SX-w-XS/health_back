@@ -18,7 +18,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ApiModel(description = "预测参数模型")
+@ApiModel(description = "预测冠心病参数模型")
 public class UserPredictDTO implements Serializable {
     @ApiModelProperty("用户ID")
     private Integer userId;
