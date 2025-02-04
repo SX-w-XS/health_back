@@ -3,6 +3,7 @@ package com.health.service.impl;
 import com.health.dto.UserPredictDMDTO;
 import com.health.dto.UserPredictDTO;
 import com.health.service.PredictService;
+import com.health.vo.PredictDMVO;
 import com.health.vo.PredictVO;
 import org.dmg.pmml.FieldName;
 import org.dmg.pmml.PMML;
@@ -30,7 +31,7 @@ import java.util.Map;
 public class PredictServiceImpl implements PredictService {
     @Override
     public PredictVO predict(UserPredictDTO predictDTO) {
-        String real=null;//初始值为-1，不代表任何的状态
+
         Map<String,Double> inputvector=new HashMap<String ,Double>();
         //加载模型
         Evaluator evaluator = loadPmml();
@@ -127,8 +128,62 @@ public class PredictServiceImpl implements PredictService {
     }
 
     @Override
-    public PredictVO predictDM(UserPredictDMDTO predictDMDTO) {
-        return null;
+    public PredictDMVO predictDM(UserPredictDMDTO predictDMDTO) {
+        Map<String,Double> inputvector=new HashMap<String ,Double>();
+        //加载模型
+        Evaluator evaluator = loadPmmlDM();
+
+        List<InputField> inputFields = evaluator.getInputFields();
+
+        inputvector.put("HighBP",predictDMDTO.getHighBP());
+        inputvector.put("HighChol",predictDMDTO.getHighChol());
+        inputvector.put("CholCheck",predictDMDTO.getCholCheck());
+        inputvector.put("BMI",predictDMDTO.getBMI());
+        inputvector.put("Smoker",predictDMDTO.getSmoker());
+        inputvector.put("Stroke",predictDMDTO.getStroke());
+        inputvector.put("HeartDiseaseorAttack",predictDMDTO.getHeartDiseaseorAttack());
+        inputvector.put("PhysActivity",predictDMDTO.getPhysActivity());
+        inputvector.put("Fruits",predictDMDTO.getFruits());
+        inputvector.put("Veggies",predictDMDTO.getVeggies());
+        inputvector.put("HvyAlcoholConsump",predictDMDTO.getHvyAlcoholConsump());
+        inputvector.put("AnyHealthcare",predictDMDTO.getAnyHealthcare());
+        inputvector.put("NoDocbcCost",predictDMDTO.getNoDocbcCost());
+        inputvector.put("GenHlth",predictDMDTO.getGenHlth());
+        inputvector.put("MentHlth",predictDMDTO.getMentHlth());
+        inputvector.put("PhysHlth",predictDMDTO.getPhysHlth());
+        inputvector.put("DiffWalk",predictDMDTO.getDiffWalk());
+        inputvector.put("Sex", Double.valueOf(predictDMDTO.getUserSex()));
+        inputvector.put("Age", predictDMDTO.getUserAge());
+        inputvector.put("Education", predictDMDTO.getEducation());
+        inputvector.put("Income", predictDMDTO.getIncome());
+
+
+
+        Map<FieldName, FieldValue> arguments = new LinkedHashMap<FieldName, FieldValue>();
+        for (InputField inputField : inputFields) {
+
+            FieldName inputFieldName = inputField.getName();
+            Object rawValue = inputvector.get(inputFieldName.getValue());
+            FieldValue inputFieldValue = inputField.prepare(rawValue);
+            arguments.put(inputFieldName, inputFieldValue);
+        }
+
+        Map<FieldName, ?> results = evaluator.evaluate(arguments);
+        List<OutputField> outputFields = evaluator.getOutputFields();
+        PredictDMVO predictDMVO = new PredictDMVO();
+        int i=0;
+        for (OutputField outputField : outputFields) {
+            FieldName outputFieldName = outputField.getName();
+            Object outputFieldValue = results.get(outputFieldName);
+            if (i==0)
+                predictDMVO.setProbability0((Double) outputFieldValue);
+            else if (i==1) {
+                predictDMVO.setProbability1((Double) outputFieldValue);
+            } else
+                predictDMVO.setProbability2((Double) outputFieldValue);
+            i++;
+        }
+        return predictDMVO;
     }
 
     public  void get(){
@@ -138,6 +193,47 @@ public class PredictServiceImpl implements PredictService {
              System.out.println(inputField.getFieldName());
          }
      }
+
+    public void getDM(){
+        Evaluator evaluator = loadPmmlDM();
+        List<InputField> inputFields = evaluator.getInputFields();
+        for (InputField inputField : inputFields) {
+            System.out.println(inputField.getFieldName());
+        }
+    }
+
+    private Evaluator loadPmmlDM() {
+        PMML pmml = new PMML();
+        InputStream inputStream = null;
+        // 构建相对路径，这里假设相对当前类所在的包路径往上找，找到resources目录下的template目录中的文件
+        inputStream = PredictServiceImpl.class.getClassLoader().getResourceAsStream("template/diabetes_model.pmml");
+
+        if(inputStream == null){
+            return null;
+        }
+        InputStream is = inputStream;
+        try {
+            pmml = org.jpmml.model.PMMLUtil.unmarshal(is);}
+        catch(org.xml.sax.SAXException e1) {
+            e1.printStackTrace();
+        }
+        catch(javax.xml.bind.JAXBException e2) {
+            e2.printStackTrace();
+        }
+        finally {
+            //关闭输入流
+            try {
+                is.close();
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        ModelEvaluatorFactory modelEvaluatorFactory = ModelEvaluatorFactory.newInstance();
+        Evaluator evaluator = modelEvaluatorFactory.newModelEvaluator(pmml);
+        pmml=null;
+        return evaluator;
+    }
 
     private Evaluator loadPmml()//加载pmml文件
     {
@@ -173,7 +269,5 @@ public class PredictServiceImpl implements PredictService {
         return evaluator;
     }
 
-   public void DMPredict( ){
 
-   }
 }

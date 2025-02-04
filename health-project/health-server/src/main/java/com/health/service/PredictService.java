@@ -2,6 +2,7 @@ package com.health.service;
 
 import com.health.dto.UserPredictDMDTO;
 import com.health.dto.UserPredictDTO;
+import com.health.vo.PredictDMVO;
 import com.health.vo.PredictVO;
 
 import java.util.Map;
@@ -18,5 +19,5 @@ public interface PredictService {
     public PredictVO predict(UserPredictDTO predictDTO);
 
     //糖尿病
-   PredictVO predictDM(UserPredictDMDTO predictDMDTO);
+   PredictDMVO predictDM(UserPredictDMDTO predictDMDTO);
 }

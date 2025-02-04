@@ -6,6 +6,7 @@ import com.health.dto.UserPredictDMDTO;
 import com.health.dto.UserPredictDTO;
 import com.health.result.Result;
 import com.health.service.PredictService;
+import com.health.vo.PredictDMVO;
 import com.health.vo.PredictVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,9 +44,9 @@ public class PredictController {
 
     @PostMapping("/DM")
     @ApiOperation(value = "糖尿病")
-    public  Result<PredictVO> predictDM(@RequestBody UserPredictDMDTO userPredictDMDTO) {
+    public  Result<PredictDMVO> predictDM(@RequestBody UserPredictDMDTO userPredictDMDTO) {
         log.info("糖尿病：{}", userPredictDMDTO);
-        PredictVO predict = predictService.predictDM(userPredictDMDTO);
+        PredictDMVO predict = predictService.predictDM(userPredictDMDTO);
         return Result.success(predict);
     }
 }
