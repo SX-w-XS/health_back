@@ -62,15 +62,15 @@ public class UserServiceImpl implements UserService {
         criteria.andUsernameEqualTo(userSignUpDTO.getUsername());
         List<User> users = userMapper.selectByExample(userExample);
         if(users != null && users.size() > 0){
-        String password = userSignUpDTO.getPassword();
-        password = DigestUtils.md5DigestAsHex(password.getBytes());
-        User user = new User();
-        BeanUtils.copyProperties(userSignUpDTO,user);
-        user.setPassword(password);
-        userMapper.insert(user);}
+            throw new AccountNotFoundException(MessageConstant.ACCOUNT_FOUND);}
         else {
-             throw new AccountNotFoundException(MessageConstant.ACCOUNT_FOUND);
-        }
+            String password = userSignUpDTO.getPassword();
+            password = DigestUtils.md5DigestAsHex(password.getBytes());
+            User user = new User();
+            BeanUtils.copyProperties(userSignUpDTO,user);
+            user.setPassword(password);
+            userMapper.insert(user);}
+
         }
 
 
