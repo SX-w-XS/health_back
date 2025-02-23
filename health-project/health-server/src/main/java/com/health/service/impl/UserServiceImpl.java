@@ -74,16 +74,6 @@ public class UserServiceImpl implements UserService {
         }
 
 
-    @Override
-    public UserVO queryById(String id) {
-        User user = userMapper.selectByPrimaryKey(id);
-        if(user != null){
-            UserVO userVO = new UserVO();
-            BeanUtils.copyProperties(user,userVO);
-            return userVO;
-        }
-        return null;
-    }
 
     @Override
     public void update(UserDTO userDTO) {

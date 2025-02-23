@@ -18,7 +18,6 @@ public interface UserService {
 
     void register(UserSignUpDTO userSignUpDTO);
 
-    UserVO queryById(String id);
 
     void update(UserDTO user);
 }

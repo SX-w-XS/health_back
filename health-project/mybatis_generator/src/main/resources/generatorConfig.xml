@@ -54,5 +54,11 @@
         <table tableName="message" domainObjectName="Message">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
+        <table tableName="chd_record" domainObjectName="ChdRecord">
+                <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
+        <table tableName="dm_record" domainObjectName="DmRecord">
+                <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
     </context>
 </generatorConfiguration>

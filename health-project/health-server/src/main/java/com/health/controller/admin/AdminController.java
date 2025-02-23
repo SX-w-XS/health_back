@@ -1,13 +1,13 @@
-package com.health.controller.user;
+package com.health.controller.admin;
 
 import com.health.constant.JwtClaimsConstant;
 import com.health.context.BaseContext;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
-import com.health.dto.UserSignUpDTO;
 import com.health.entities.User;
 import com.health.properties.JwtProperties;
 import com.health.result.Result;
+import com.health.service.AdminService;
 import com.health.service.UserService;
 import com.health.utils.JwtUtil;
 import com.health.vo.UserLoginVO;
@@ -17,7 +17,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,65 +28,77 @@ import java.util.Map;
 
 /**
  * @BelongsProject: sky_test
- * @BelongsPackage: com.health.controller.user
+ * @BelongsPackage: com.health.controller.admin
  * @Author: X_X
  * @Description: TODO
  * @Version: 1.0
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/admin")
 @Slf4j
-@Api(tags = "用户相关接口")
-public class UserController {
+@Api(tags = "管理相关接口")
+public class AdminController {
+
     @Autowired
     private JwtProperties jwtProperties;
 
     @Resource
-    UserService userService;
+    private AdminService adminService ;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
-    @ApiOperation(value = "用户登录")
-    public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
-        log.info("用户登录：{}", userLoginDTO);
-        User user= userService.login(userLoginDTO);
+    @ApiOperation(value = "管理登录")
+    public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO){
+        log.info("管理登录：{}", userLoginDTO);
+        User admin=adminService.login(userLoginDTO);
 
         //登录成功后，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
-        claims.put(JwtClaimsConstant.USER_ID, user.getUserId());
-        String token= JwtUtil.createJWT(jwtProperties.getUserSecretKey(),
-                jwtProperties.getUserTtl(),
+        claims.put(JwtClaimsConstant.Admin_ID, admin.getUserId());
+        String token= JwtUtil.createJWT(jwtProperties.getAdminSecretKey(),
+                jwtProperties.getAdminTtl(),
                 claims
-                );
+        );
 
         UserLoginVO userLoginVO = new UserLoginVO();
-        BeanUtils.copyProperties(user, userLoginVO);
-        userLoginVO.setUserId(user.getUserId());
+        BeanUtils.copyProperties(admin, userLoginVO);
+        userLoginVO.setUserId(admin.getUserId());
         userLoginVO.setToken(token);
         return Result.success(userLoginVO);
     }
 
     @PostMapping("/logout")
-    @ApiOperation(value = "用户登出")
+    @ApiOperation(value = "管理登出")
     public Result<String> logout(@RequestBody UserLoginDTO userLoginDTO) {
-        log.info("用户登出：{}", userLoginDTO);
+        log.info("管理登出：{}", userLoginDTO);
         BaseContext.removeCurrentId();
         return Result.success("登出成功");
     }
 
-    @PostMapping("/register")
-    @ApiOperation(value = "用户注册")
-    public Result register(@RequestBody UserSignUpDTO UserSignUpDTO) {
-        log.info("用户注册：{}", UserSignUpDTO);
-        userService.register(UserSignUpDTO);
-        return Result.success("注册成功");
+    @PostMapping("/queryById")
+    @ApiOperation(value = "根据id查询用户信息")
+    public Result<UserVO> queryById(String id) {
+        log.info("查询用户信息：{}", id);
+        if (adminService.queryById(id)==null) {
+            return Result.error("用户不存在");
+        }
+        return Result.success(adminService.queryById(id));
     }
-
-
     @PostMapping("/update")
     @ApiOperation(value = "更新用户信息")
     public Result update(@RequestBody UserDTO user) {
         log.info("更新用户信息：{}", user);
         userService.update(user);
         return Result.success("更新成功");
+    }
+
+    @PostMapping("/delete")
+    @ApiOperation(value = "删除用户")
+    public Result delete(String id) {
+        log.info("删除用户：{}", id);
+        adminService.deleteById(id);
+        return Result.success("删除成功");
     }
 }

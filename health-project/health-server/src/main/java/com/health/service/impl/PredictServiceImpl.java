@@ -2,12 +2,17 @@ package com.health.service.impl;
 
 import com.health.dto.UserPredictDMDTO;
 import com.health.dto.UserPredictDTO;
+import com.health.entities.ChdRecord;
+import com.health.entities.DmRecord;
+import com.health.mapper.ChdRecordMapper;
+import com.health.mapper.DmRecordMapper;
 import com.health.service.PredictService;
 import com.health.vo.PredictDMVO;
 import com.health.vo.PredictVO;
 import org.dmg.pmml.FieldName;
 import org.dmg.pmml.PMML;
 import org.jpmml.evaluator.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
@@ -29,6 +34,11 @@ import java.util.Map;
  */
 @Service
 public class PredictServiceImpl implements PredictService {
+    @Autowired
+    ChdRecordMapper chdRecordMapper;
+    @Autowired
+    DmRecordMapper dmRecordMapper;
+
     @Override
     public PredictVO predict(UserPredictDTO predictDTO) {
 
@@ -111,6 +121,11 @@ public class PredictServiceImpl implements PredictService {
         }
 
 
+        //将结果插入数据库
+        ChdRecord chdRecord=new ChdRecord();
+        chdRecord.setUsername(predictDTO.getUserName());
+        chdRecord.setUserId(predictDTO.getUserId());
+
         Map<FieldName, ?> results = evaluator.evaluate(arguments);
         List<OutputField> outputFields = evaluator.getOutputFields();
         PredictVO predictVO = new PredictVO();
@@ -118,12 +133,19 @@ public class PredictServiceImpl implements PredictService {
         for (OutputField outputField : outputFields) {
             FieldName outputFieldName = outputField.getName();
             Object outputFieldValue = results.get(outputFieldName);
-            if (i==0)
-             predictVO.setNegative((Double) outputFieldValue);
-            else
+            if (i==0) {
+                predictVO.setNegative((Double) outputFieldValue);
+                chdRecord.setNegative((Double) outputFieldValue);
+            }
+            else{
               predictVO.setPositive((Double) outputFieldValue);
+              chdRecord.setPositive((Double) outputFieldValue);
+            }
             i=1;
         }
+
+
+        chdRecordMapper.insert(chdRecord);
         return predictVO;
     }
 
@@ -168,6 +190,10 @@ public class PredictServiceImpl implements PredictService {
             arguments.put(inputFieldName, inputFieldValue);
         }
 
+        DmRecord dmRecord=new DmRecord();
+        dmRecord.setUsername(predictDMDTO.getUserName());
+        dmRecord.setUserId(predictDMDTO.getUserId());
+
         Map<FieldName, ?> results = evaluator.evaluate(arguments);
         List<OutputField> outputFields = evaluator.getOutputFields();
         PredictDMVO predictDMVO = new PredictDMVO();
@@ -175,12 +201,17 @@ public class PredictServiceImpl implements PredictService {
         for (OutputField outputField : outputFields) {
             FieldName outputFieldName = outputField.getName();
             Object outputFieldValue = results.get(outputFieldName);
-            if (i==0)
+            if (i==0){
                 predictDMVO.setProbability0((Double) outputFieldValue);
+                dmRecord.setProbability0((Double) outputFieldValue);
+            }
             else if (i==1) {
                 predictDMVO.setProbability1((Double) outputFieldValue);
-            } else
+                dmRecord.setProbability1((Double) outputFieldValue);
+            } else{
                 predictDMVO.setProbability2((Double) outputFieldValue);
+                dmRecord.setProbability2((Double) outputFieldValue);
+            }
             i++;
         }
         return predictDMVO;
