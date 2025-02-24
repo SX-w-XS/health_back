@@ -101,4 +101,20 @@ public class AdminController {
         adminService.deleteById(id);
         return Result.success("删除成功");
     }
+
+    //批量删除
+    @PostMapping("/deleteBatch")
+    @ApiOperation(value = "批量删除用户")
+    public Result deleteBatch(String[] ids) {
+        log.info("批量删除用户：{}", ids);
+        adminService.deleteBatch(ids);
+        return Result.success("删除成功");
+    }
+
+    @PostMapping("/queryAll")
+    @ApiOperation(value = "查询所有用户")
+    public Result queryAll() {
+        log.info("查询所有用户");
+        return Result.success(adminService.queryAll());
+    }
 }

@@ -72,4 +72,25 @@ public class AdminServiceImpl implements AdminService {
         }
 
     }
+
+    @Override
+    public void deleteBatch(String[] ids) {
+        try {
+            for (String id : ids) {
+                userMapper.deleteByPrimaryKey(id);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("删除失败");
+        }
+    }
+
+    @Override
+    public List<User> queryAll() {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andRoleNotEqualTo(1);
+        return userMapper.selectByExample(userExample);
+    }
+
+
 }
