@@ -4,6 +4,7 @@ import com.health.constant.MessageConstant;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.dto.UserSignUpDTO;
+import com.health.entities.Message;
 import com.health.entities.User;
 import com.health.entities.UserExample;
 import com.health.exception.AccountNotFoundException;
@@ -80,5 +81,10 @@ public class UserServiceImpl implements UserService {
         User user=new User();
         BeanUtils.copyProperties(userDTO,user);
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public List<Message> getMessages() {
+        return null;
     }
 }

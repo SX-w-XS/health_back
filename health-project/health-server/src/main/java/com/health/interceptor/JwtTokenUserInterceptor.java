@@ -41,7 +41,7 @@ public class JwtTokenUserInterceptor implements HandlerInterceptor {
             return true;
         }
         //如果是注册、登录接口，直接放行
-        if ("/user/login".equals(request.getRequestURI()) || "/user/register".equals(request.getRequestURI())) {
+        if ("/user/login".equals(request.getRequestURI()) || "/user/register".equals(request.getRequestURI()) || "/user/predict/DM".equals(request.getRequestURI()))  {
             return true;
         }
         //1、从请求头中获取令牌

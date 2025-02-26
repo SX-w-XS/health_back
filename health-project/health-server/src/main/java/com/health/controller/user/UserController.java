@@ -90,4 +90,11 @@ public class UserController {
         userService.update(user);
         return Result.success("更新成功");
     }
+
+    @PostMapping("/message")
+    @ApiOperation("公告")
+    public Result message() {
+        log.info("新闻公告");
+        return Result.success("新闻公告");
+    }
 }

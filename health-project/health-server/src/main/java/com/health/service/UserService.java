@@ -3,8 +3,11 @@ package com.health.service;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.dto.UserSignUpDTO;
+import com.health.entities.Message;
 import com.health.entities.User;
 import com.health.vo.UserVO;
+
+import java.util.List;
 
 /**
  * @BelongsProject: sky_test
@@ -20,4 +23,6 @@ public interface UserService {
 
 
     void update(UserDTO user);
+
+    List<Message> getMessages();
 }
