@@ -1,6 +1,10 @@
 package com.health.service;
 
+import com.github.pagehelper.PageInfo;
+import com.health.dto.MessageDTO;
+import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
+import com.health.entities.Message;
 import com.health.entities.User;
 import com.health.vo.UserVO;
 
@@ -15,5 +19,11 @@ public interface AdminService {
 
     void deleteBatch(String[] ids);
 
-    List<User> queryAll();
+    PageInfo<User> queryAll(int pageNum, int pageSize, int limit);
+
+    PageInfo<Message> queryAllMessage(int pageNum, int pageSize, int limit);
+
+    PageInfo<UserVO> queryUser(UserDTO user);
+
+    PageInfo<Message> queryMessage(MessageDTO messageDTO);
 }

@@ -95,6 +95,7 @@ public class UserController {
     @ApiOperation("公告")
     public Result message() {
         log.info("新闻公告");
+        userService.getMessages();
         return Result.success("新闻公告");
     }
 }

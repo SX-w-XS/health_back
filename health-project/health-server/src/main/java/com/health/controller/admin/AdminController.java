@@ -1,7 +1,9 @@
 package com.health.controller.admin;
 
+import com.github.pagehelper.PageInfo;
 import com.health.constant.JwtClaimsConstant;
 import com.health.context.BaseContext;
+import com.health.dto.MessageDTO;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.entities.User;
@@ -15,6 +17,7 @@ import com.health.vo.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -86,6 +89,17 @@ public class AdminController {
         }
         return Result.success(adminService.queryById(id));
     }
+
+    @PostMapping("/queryUser")
+    @ApiOperation(value = "查询用户信息")
+    public  Result<PageInfo<UserVO>> queryUser(@RequestBody UserDTO user) {
+        log.info("查询用户信息：{}", user);
+        if (adminService.queryUser(user)==null) {
+            return Result.error("用户不存在");
+        }
+        return Result.success(adminService.queryUser(user));
+    }
+
     @PostMapping("/update")
     @ApiOperation(value = "更新用户信息")
     public Result update(@RequestBody UserDTO user) {
@@ -113,8 +127,23 @@ public class AdminController {
 
     @PostMapping("/queryAll")
     @ApiOperation(value = "查询所有用户")
-    public Result queryAll() {
+    public Result queryAll(int pageNum, int pageSize,int limit)    {
         log.info("查询所有用户");
-        return Result.success(adminService.queryAll());
+        return Result.success(adminService.queryAll(pageNum, pageSize,limit));
     }
+
+    @PostMapping("/queryAllMessage")
+    @ApiOperation(value = "查询所有信息")
+    public Result queryAllMessage(int pageNum, int pageSize,int limit)    {
+        log.info("查询所有信息");
+        return Result.success(adminService.queryAllMessage(pageNum, pageSize,limit));
+    }
+
+    @PostMapping("/queryMessage")
+    @ApiOperation(value = "查询信息")
+    public Result queryMessage(@RequestBody MessageDTO messageDTO)        {
+        log.info("查询信息：{}", messageDTO);
+        return Result.success(adminService.queryMessage(messageDTO));
+    }
+
 }

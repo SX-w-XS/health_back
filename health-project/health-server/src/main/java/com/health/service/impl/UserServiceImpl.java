@@ -5,10 +5,12 @@ import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.dto.UserSignUpDTO;
 import com.health.entities.Message;
+import com.health.entities.MessageExample;
 import com.health.entities.User;
 import com.health.entities.UserExample;
 import com.health.exception.AccountNotFoundException;
 import com.health.exception.PasswordErrorException;
+import com.health.mapper.MessageMapper;
 import com.health.mapper.UserMapper;
 import com.health.service.UserService;
 import com.health.vo.UserVO;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +34,9 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
+
+    @Resource
+    private MessageMapper messageMapper;
 
     @Override
     public User login(UserLoginDTO userLoginDTO) {
@@ -85,6 +91,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Message> getMessages() {
-        return null;
+        //查询前五条新记录
+        return  messageMapper.selectMessageFive();
     }
 }

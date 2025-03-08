@@ -1,11 +1,18 @@
 package com.health.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.health.constant.MessageConstant;
+import com.health.dto.MessageDTO;
+import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
+import com.health.entities.Message;
+import com.health.entities.MessageExample;
 import com.health.entities.User;
 import com.health.entities.UserExample;
 import com.health.exception.AccountNotFoundException;
 import com.health.exception.PasswordErrorException;
+import com.health.mapper.MessageMapper;
 import com.health.mapper.UserMapper;
 import com.health.service.AdminService;
 import com.health.vo.UserVO;
@@ -14,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +36,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private MessageMapper messageMapper;
 
     @Override
     public User login(UserLoginDTO userLoginDTO) {
@@ -85,12 +96,111 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<User> queryAll() {
+    public PageInfo<User> queryAll(int pageNum, int pageSize,int limit) {
+        PageHelper.startPage(pageNum,pageSize);
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
         criteria.andRoleNotEqualTo(1);
-        return userMapper.selectByExample(userExample);
+        List<User> users = userMapper.selectByExample(userExample);
+
+        PageInfo<User> pageInfo = new PageInfo<>(users);
+        pageInfo.setList(users);
+        pageInfo.setPageNum(pageNum);
+        pageInfo.setPageSize(pageSize);
+        return pageInfo;
     }
 
+    @Override
+    public PageInfo<Message> queryAllMessage(int pageNum, int pageSize, int limit) {
+        PageHelper.startPage(pageNum,pageSize);
+        MessageExample messageExample = new MessageExample();
 
-}
+        List<Message> messages = messageMapper.selectByExample(messageExample);
+
+        PageInfo<Message> pageInfo = new PageInfo<>(messages);
+        pageInfo.setList(messages);
+        pageInfo.setPageNum(pageNum);
+        pageInfo.setPageSize(pageSize);
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo<UserVO> queryUser(UserDTO user) {
+        UserExample userExample = new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+
+        if (user.getUsername() != null){
+        criteria.andUsernameEqualTo(user.getUsername());}
+
+        if (user.getPhone() != null){
+            criteria.andPhoneEqualTo(user.getPhone());}
+
+        if (user.getEmail() != null){
+            criteria.andEmailEqualTo(user.getEmail());}
+
+        if (user.getRole() != null){
+            criteria.andRoleEqualTo(user.getRole());}
+
+        if (user.getUserSex() != null){
+            criteria.andRoleEqualTo(user.getUserSex());}
+
+        if (user.getNickname() != null){
+            criteria.andNicknameEqualTo(user.getNickname());}
+
+        if(user.getUserId() != null){
+            criteria.andUserIdEqualTo(user.getUserId());
+        }
+
+        if(user.getStatus() != null){
+            criteria.andStatusEqualTo(user.getStatus());
+        }
+
+        if(user.getUserAge()!= null){
+            criteria.andUserAgeEqualTo(user.getUserAge());
+        }
+
+        if(user.getDiseaseId() != null){
+            criteria.andDiseaseIdEqualTo(user.getDiseaseId());
+        }
+
+        List<User> users = userMapper.selectByExample(userExample);
+        List<UserVO> userVOS = new ArrayList<>();
+        if(users != null && users.size() > 0){
+            for (User user1 : users) {
+                UserVO userVO = new UserVO();
+                BeanUtils.copyProperties(user1,userVO);
+                userVOS.add(userVO);
+            }
+            PageInfo<UserVO> pageInfo = new PageInfo<>(userVOS);
+            pageInfo.setList(userVOS);
+            return pageInfo;
+
+        }
+
+
+        return null;
+    }
+
+    @Override
+    public PageInfo<Message> queryMessage(MessageDTO messageDTO) {
+        MessageExample messageExample = new MessageExample();
+        MessageExample.Criteria criteria = messageExample.createCriteria();
+
+       if (messageDTO.getKind() != null){
+           criteria.andKindEqualTo(messageDTO.getKind());}
+
+       if(messageDTO.getTitle() != null){
+           criteria.andTitleLike("%"+messageDTO.getTitle()+"%");
+       }
+
+       List<Message> messages = messageMapper.selectByExample(messageExample);
+        if(messages != null && messages.size() > 0){
+            PageInfo<Message> pageInfo = new PageInfo<>(messages);
+            pageInfo.setList(messages);
+            return pageInfo;
+        }
+
+        return null;
+    }
+
+    }
