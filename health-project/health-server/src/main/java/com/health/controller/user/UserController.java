@@ -5,6 +5,7 @@ import com.health.context.BaseContext;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.dto.UserSignUpDTO;
+import com.health.entities.Message;
 import com.health.entities.User;
 import com.health.properties.JwtProperties;
 import com.health.result.Result;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -95,7 +97,7 @@ public class UserController {
     @ApiOperation("公告")
     public Result message() {
         log.info("新闻公告");
-        userService.getMessages();
-        return Result.success("新闻公告");
+        List<Message> messages = userService.getMessages();
+        return Result.success(messages);
     }
 }
