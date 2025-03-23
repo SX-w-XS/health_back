@@ -1,6 +1,7 @@
 package com.health.entities;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MessageExample {
@@ -102,6 +103,66 @@ public class MessageExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+        }
+
+        public Criteria andMessageIdIsNull() {
+            addCriterion("MESSAGE_ID is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMessageIdIsNotNull() {
+            addCriterion("MESSAGE_ID is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMessageIdEqualTo(Integer value) {
+            addCriterion("MESSAGE_ID =", value, "messageId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMessageIdNotEqualTo(Integer value) {
+            addCriterion("MESSAGE_ID <>", value, "messageId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMessageIdGreaterThan(Integer value) {
+            addCriterion("MESSAGE_ID >", value, "messageId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMessageIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("MESSAGE_ID >=", value, "messageId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMessageIdLessThan(Integer value) {
+            addCriterion("MESSAGE_ID <", value, "messageId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMessageIdLessThanOrEqualTo(Integer value) {
+            addCriterion("MESSAGE_ID <=", value, "messageId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMessageIdIn(List<Integer> values) {
+            addCriterion("MESSAGE_ID in", values, "messageId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMessageIdNotIn(List<Integer> values) {
+            addCriterion("MESSAGE_ID not in", values, "messageId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMessageIdBetween(Integer value1, Integer value2) {
+            addCriterion("MESSAGE_ID between", value1, value2, "messageId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMessageIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("MESSAGE_ID not between", value1, value2, "messageId");
+            return (Criteria) this;
         }
 
         public Criteria andTitleIsNull() {
@@ -301,6 +362,66 @@ public class MessageExample {
 
         public Criteria andKindNotBetween(Integer value1, Integer value2) {
             addCriterion("KIND not between", value1, value2, "kind");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeIsNull() {
+            addCriterion("CREATETIME is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeIsNotNull() {
+            addCriterion("CREATETIME is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeEqualTo(Date value) {
+            addCriterion("CREATETIME =", value, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeNotEqualTo(Date value) {
+            addCriterion("CREATETIME <>", value, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeGreaterThan(Date value) {
+            addCriterion("CREATETIME >", value, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("CREATETIME >=", value, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeLessThan(Date value) {
+            addCriterion("CREATETIME <", value, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeLessThanOrEqualTo(Date value) {
+            addCriterion("CREATETIME <=", value, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeIn(List<Date> values) {
+            addCriterion("CREATETIME in", values, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeNotIn(List<Date> values) {
+            addCriterion("CREATETIME not in", values, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeBetween(Date value1, Date value2) {
+            addCriterion("CREATETIME between", value1, value2, "createtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatetimeNotBetween(Date value1, Date value2) {
+            addCriterion("CREATETIME not between", value1, value2, "createtime");
             return (Criteria) this;
         }
     }

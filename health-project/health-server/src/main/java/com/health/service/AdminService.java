@@ -1,6 +1,7 @@
 package com.health.service;
 
 import com.github.pagehelper.PageInfo;
+import com.health.dto.MessageAddDTO;
 import com.health.dto.MessageDTO;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
@@ -26,4 +27,8 @@ public interface AdminService {
     PageInfo<UserVO> queryUser(UserDTO user);
 
     PageInfo<Message> queryMessage(MessageDTO messageDTO);
+
+    void addMessage(MessageAddDTO messageAddDTO);
+
+    void deleteMessage(List<Integer> ids);
 }

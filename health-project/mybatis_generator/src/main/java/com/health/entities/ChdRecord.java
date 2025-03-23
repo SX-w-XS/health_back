@@ -8,7 +8,6 @@ import javax.persistence.*;
 */
 @Table(name = "chd_record")
 public class ChdRecord {
-    @Id
     @Column(name = "user_id")
     private Integer userId;
 

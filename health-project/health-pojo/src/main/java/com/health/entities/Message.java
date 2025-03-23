@@ -1,7 +1,9 @@
 package com.health.entities;
 
 import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * 表名：message
@@ -9,6 +11,13 @@ import javax.persistence.Table;
 */
 @Table(name = "message")
 public class Message {
+    /**
+     * ID
+     */
+    @Id
+    @Column(name = "MESSAGE_ID")
+    private Integer messageId;
+
     /**
      * 标题
      */
@@ -27,17 +36,32 @@ public class Message {
     @Column(name = "KIND")
     private Integer kind;
 
-    /**
-     * ID
-     */
-    @Column(name = "MESSAGE_ID")
-    private String messageId;
+    @Column(name = "CREATETIME")
+    private Date createtime;
 
     /**
      * 内容
      */
     @Column(name = "CONTENT")
     private String content;
+
+    /**
+     * 获取ID
+     *
+     * @return messageId - ID
+     */
+    public Integer getMessageId() {
+        return messageId;
+    }
+
+    /**
+     * 设置ID
+     *
+     * @param messageId ID
+     */
+    public void setMessageId(Integer messageId) {
+        this.messageId = messageId;
+    }
 
     /**
      * 获取标题
@@ -94,21 +118,17 @@ public class Message {
     }
 
     /**
-     * 获取ID
-     *
-     * @return messageId - ID
+     * @return createtime
      */
-    public String getMessageId() {
-        return messageId;
+    public Date getCreatetime() {
+        return createtime;
     }
 
     /**
-     * 设置ID
-     *
-     * @param messageId ID
+     * @param createtime
      */
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 
     /**

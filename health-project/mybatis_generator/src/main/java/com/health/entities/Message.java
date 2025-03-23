@@ -1,5 +1,6 @@
 package com.health.entities;
 
+import java.util.Date;
 import javax.persistence.*;
 
 /**
@@ -32,6 +33,9 @@ public class Message {
      */
     @Column(name = "KIND")
     private Integer kind;
+
+    @Column(name = "CREATETIME")
+    private Date createtime;
 
     /**
      * 内容
@@ -109,6 +113,20 @@ public class Message {
      */
     public void setKind(Integer kind) {
         this.kind = kind;
+    }
+
+    /**
+     * @return createtime
+     */
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    /**
+     * @param createtime
+     */
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
     }
 
     /**

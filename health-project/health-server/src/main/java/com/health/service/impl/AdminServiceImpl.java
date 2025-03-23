@@ -3,6 +3,7 @@ package com.health.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.health.constant.MessageConstant;
+import com.health.dto.MessageAddDTO;
 import com.health.dto.MessageDTO;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
@@ -203,4 +204,16 @@ public class AdminServiceImpl implements AdminService {
         return null;
     }
 
+    @Override
+    public void addMessage(MessageAddDTO messageAddDTO) {
+        Message message = new Message();
+        BeanUtils.copyProperties(messageAddDTO,message);
+        messageMapper.insert(message);
     }
+
+
+    @Override
+    public void deleteMessage(List<Integer> ids) {
+        for (Integer id : ids) {
+        messageMapper.deleteByPrimaryKey(id);}
+}}

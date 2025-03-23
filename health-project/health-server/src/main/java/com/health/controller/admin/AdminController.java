@@ -3,6 +3,7 @@ package com.health.controller.admin;
 import com.github.pagehelper.PageInfo;
 import com.health.constant.JwtClaimsConstant;
 import com.health.context.BaseContext;
+import com.health.dto.MessageAddDTO;
 import com.health.dto.MessageDTO;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -146,4 +148,19 @@ public class AdminController {
         return Result.success(adminService.queryMessage(messageDTO));
     }
 
+    @PostMapping("/addMessage")
+    @ApiOperation(value = "添加公告")
+    public Result addMessage(@RequestBody MessageAddDTO messageAddDTO) {
+        log.info("添加公告：{}", messageAddDTO);
+        adminService.addMessage(messageAddDTO);
+        return Result.success("添加成功");
+    }
+
+    @PostMapping("/deleteMessage")
+    @ApiOperation(value = "删除公告")
+    public Result deleteMessage(List<Integer> ids) {
+        log.info("删除公告：{}", ids);
+        adminService.deleteMessage(ids);
+        return Result.success("删除成功");
+    }
 }
