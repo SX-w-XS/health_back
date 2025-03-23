@@ -9,6 +9,7 @@ import com.health.entities.Message;
 import com.health.entities.User;
 import com.health.properties.JwtProperties;
 import com.health.result.Result;
+import com.health.service.AdminService;
 import com.health.service.UserService;
 import com.health.utils.JwtUtil;
 import com.health.vo.UserLoginVO;
@@ -46,6 +47,9 @@ public class UserController {
 
     @Resource
     UserService userService;
+
+    @Resource
+    AdminService adminService;
 
     @PostMapping("/login")
     @ApiOperation(value = "用户登录")
@@ -99,5 +103,15 @@ public class UserController {
         log.info("新闻公告");
         List<Message> messages = userService.getMessages();
         return Result.success(messages);
+    }
+
+    @PostMapping("/queryById")
+    @ApiOperation(value = "根据id查询用户信息")
+    public Result<UserVO> queryById(String id) {
+        log.info("查询用户信息：{}", id);
+        if (adminService.queryById(id)==null) {
+            return Result.error("用户不存在");
+        }
+        return Result.success(adminService.queryById(id));
     }
 }
