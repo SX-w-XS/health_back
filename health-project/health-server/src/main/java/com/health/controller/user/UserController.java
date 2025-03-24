@@ -1,7 +1,9 @@
 package com.health.controller.user;
 
+import com.github.pagehelper.PageInfo;
 import com.health.constant.JwtClaimsConstant;
 import com.health.context.BaseContext;
+import com.health.dto.MessageDTO;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.dto.UserSignUpDTO;
@@ -99,10 +101,9 @@ public class UserController {
 
     @PostMapping("/message")
     @ApiOperation("公告")
-    public Result message() {
+    public Result message(@RequestBody MessageDTO messageDTO) {
         log.info("新闻公告");
-        List<Message> messages = userService.getMessages();
-        return Result.success(messages);
+        return Result.success(adminService.queryMessage(messageDTO));
     }
 
     @PostMapping("/queryById")
@@ -114,4 +115,5 @@ public class UserController {
         }
         return Result.success(adminService.queryById(id));
     }
+
 }
