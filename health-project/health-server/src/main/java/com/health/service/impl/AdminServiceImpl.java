@@ -130,22 +130,22 @@ public class AdminServiceImpl implements AdminService {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
 
-        if (user.getUsername() != null){
-        criteria.andUsernameEqualTo(user.getUsername());}
+        if (user.getUsername() != null && !user.getUsername().isEmpty()){
+        criteria.andUsernameLike("%"+user.getUsername()+"%");}
 
-        if (user.getPhone() != null){
+        if (user.getPhone() != null ){
             criteria.andPhoneEqualTo(user.getPhone());}
 
-        if (user.getEmail() != null){
+        if (user.getEmail() != null && !user.getEmail().isEmpty()){
             criteria.andEmailEqualTo(user.getEmail());}
 
-        if (user.getRole() != null){
+        if (user.getRole() != null ){
             criteria.andRoleEqualTo(user.getRole());}
 
         if (user.getUserSex() != null){
             criteria.andRoleEqualTo(user.getUserSex());}
 
-        if (user.getNickname() != null){
+        if (user.getNickname() != null && !user.getNickname().isEmpty()){
             criteria.andNicknameEqualTo(user.getNickname());}
 
         if(user.getUserId() != null){
