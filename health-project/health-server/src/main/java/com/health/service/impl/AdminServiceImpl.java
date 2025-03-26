@@ -214,6 +214,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteMessage(List<Integer> ids) {
-        for (Integer id : ids) {
-        messageMapper.deleteByPrimaryKey(id);}
+        MessageExample messageExample = new MessageExample();
+        MessageExample.Criteria criteria = messageExample.createCriteria();
+        criteria.andMessageIdIn(ids);
+        messageMapper.deleteByExample(messageExample);
 }}

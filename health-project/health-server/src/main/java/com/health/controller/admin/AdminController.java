@@ -21,10 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -158,7 +155,7 @@ public class AdminController {
 
     @PostMapping("/deleteMessage")
     @ApiOperation(value = "删除公告")
-    public Result deleteMessage(List<Integer> ids) {
+    public Result deleteMessage(@RequestParam("ids") List<Integer> ids) {
         log.info("删除公告：{}", ids);
         adminService.deleteMessage(ids);
         return Result.success("删除成功");

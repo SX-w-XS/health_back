@@ -70,6 +70,23 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .build();
         return docket;
     }
+
+    @Bean
+    public Docket docket3() {
+        ApiInfo apiInfo = new ApiInfoBuilder()
+                .title("慢性病管理平台接口文档")
+                .version("2.0")
+                .description("慢性病管理平台接口文档")
+                .build();
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .groupName("通用借口接口")
+                .apiInfo(apiInfo)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.health.controller.common"))
+                .paths(PathSelectors.any())
+                .build();
+        return docket;
+    }
     @Bean
     public Docket docket2() {
         ApiInfo apiInfo = new ApiInfoBuilder()
