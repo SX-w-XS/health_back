@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -208,12 +209,15 @@ public class AdminServiceImpl implements AdminService {
     public void addMessage(MessageAddDTO messageAddDTO) {
         Message message = new Message();
         BeanUtils.copyProperties(messageAddDTO,message);
+        message.setCreatetime(new Date());
         messageMapper.insert(message);
     }
 
 
     @Override
     public void deleteMessage(List<Integer> ids) {
-        for (Integer id : ids) {
-        messageMapper.deleteByPrimaryKey(id);}
+        MessageExample messageExample = new MessageExample();
+        MessageExample.Criteria criteria = messageExample.createCriteria();
+        criteria.andMessageIdIn(ids);
+        messageMapper.deleteByExample(messageExample);
 }}

@@ -1,6 +1,8 @@
 package com.health.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import javax.persistence.Column;
 import java.util.Date;
@@ -12,6 +14,8 @@ import java.util.Date;
  * @Description: TODO
  * @Version: 1.0
  */
+@Data
+@ApiModel(description = "添加信息")
 public class MessageAddDTO {
     /**
      * 标题
@@ -38,8 +42,5 @@ public class MessageAddDTO {
     @ApiModelProperty("内容")
     private String content;
 
-
-    @ApiModelProperty("创建时间")
-    private Date createtime;
 
 }

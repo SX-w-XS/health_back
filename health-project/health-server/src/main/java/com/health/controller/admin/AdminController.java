@@ -155,7 +155,7 @@ public class AdminController {
 
     @PostMapping("/deleteMessage")
     @ApiOperation(value = "删除公告")
-    public Result deleteMessage(List<Integer> ids) {
+    public Result deleteMessage(@RequestParam("ids") List<Integer> ids) {
         log.info("删除公告：{}", ids);
         adminService.deleteMessage(ids);
         return Result.success("删除成功");
