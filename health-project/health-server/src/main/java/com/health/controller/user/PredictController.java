@@ -1,6 +1,7 @@
 package com.health.controller.user;
 
 import com.health.context.BaseContext;
+import com.health.dto.SuggestionDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.dto.UserPredictDMDTO;
 import com.health.dto.UserPredictDTO;
@@ -50,9 +51,10 @@ public class PredictController {
         return Result.success(predict);
     }
 
-    /*@PostMapping("/suggestion")
+    @PostMapping("/suggestion")
     @ApiOperation(value = "综合建议")
-    public Result<String> suggestion(@RequestBody UserLoginDTO userLoginDTO) {
-
-    }*/
+    public Result suggestion(@RequestBody SuggestionDTO suggestionDTO) {
+              log.info("综合建议：{}", suggestionDTO);
+        return Result.success(predictService.generateAdvice(suggestionDTO));
+    }
 }

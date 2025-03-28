@@ -1,12 +1,15 @@
 package com.health.service.impl;
 
+import com.health.dto.SuggestionDTO;
 import com.health.dto.UserPredictDMDTO;
 import com.health.dto.UserPredictDTO;
-import com.health.entities.ChdRecord;
-import com.health.entities.DmRecord;
+import com.health.entities.*;
 import com.health.mapper.ChdRecordMapper;
 import com.health.mapper.DmRecordMapper;
+import com.health.mapper.SuggestionMapper;
 import com.health.service.PredictService;
+import com.health.vo.HealthAdviceF;
+import com.health.vo.HealthAdviceVO;
 import com.health.vo.PredictDMVO;
 import com.health.vo.PredictVO;
 import org.dmg.pmml.FieldName;
@@ -15,6 +18,7 @@ import org.jpmml.evaluator.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +39,9 @@ public class PredictServiceImpl implements PredictService {
     ChdRecordMapper chdRecordMapper;
     @Autowired
     DmRecordMapper dmRecordMapper;
+
+    @Resource
+    SuggestionMapper suggestionMapper;
 
     @Override
     public PredictVO predict(UserPredictDTO predictDTO) {
@@ -343,6 +350,126 @@ public class PredictServiceImpl implements PredictService {
         return predictDMVO;
     }
 
+    private static final double[] SYMPTOM_WEIGHTS = {
+            0.15, 0.12, 0.10, 0.08, 0.05 // 各症状权重
+    };
+
+    @Override
+    public HealthAdviceF generateAdvice(SuggestionDTO suggestionDTO) {
+        List<HealthAdviceVO> adviceList = new ArrayList<>();
+        ChdRecord record=chdRecordMapper.selectLastRecord(String.valueOf(suggestionDTO.getUsrId()));
+        List<HealthAdviceVO> adviceVOList = new ArrayList<>();
+        // 年龄相关建议
+        if (record.getUserage() > 45) {
+            HealthAdviceVO ageAdvice = new HealthAdviceVO();
+            ageAdvice.setCategory("基础健康");
+            ageAdvice.setTitle("中年健康管理");
+            ageAdvice.setContent("建议每年进行心血管专项检查");
+            ageAdvice.setPriority(3);
+            adviceVOList.add(ageAdvice);
+        }
+
+        // 性别相关建议
+        if(record.getGender() ==1.0){
+            HealthAdviceVO ageAdvice = new HealthAdviceVO();
+            ageAdvice.setCategory("性别专属");
+            ageAdvice.setTitle("男性健康提醒");
+            ageAdvice.setContent("定期检查前列腺特异性抗原(PSA)");
+            ageAdvice.setPriority(2);
+            adviceVOList.add(ageAdvice);
+        }
+
+        // 4. 代谢综合症建议生成器
+        // 代谢症状包括：皮肤瘙痒、易怒、愈合延迟、四肢麻木、肌肉萎缩、脱发
+        //统计症状出现的次数
+        int symptomCount = 0;
+        if(record.getItching() == 0) symptomCount++;
+        if(record.getIrritability() == 0) symptomCount++;
+        if(record.getDelayedHealing() == 0) symptomCount++;
+        if(record.getPartialParesis() == 0) symptomCount++;
+        if (record.getMuscleStiff() == 0) symptomCount++;
+        if (record.getAlopecia() == 0) symptomCount++;
+
+        if (symptomCount >= 2) {
+            HealthAdviceVO symptomAdvice = new HealthAdviceVO();
+            symptomAdvice.setCategory("代谢健康");
+            symptomAdvice.setTitle("代谢综合症预警");
+            symptomAdvice.setContent(buildMetabolicAdvice(record));
+            symptomAdvice.setPriority(symptomCount > 3 ? 5 : 4);
+            adviceVOList.add(symptomAdvice);
+        }
+
+        // 5. 心血管专项建议生成器
+        double riskScore = calculateRiskScore(record);
+
+        if (riskScore > 0.6) {
+            HealthAdviceVO riskAdvice = new HealthAdviceVO();
+            riskAdvice.setCategory("心血管健康");
+            riskAdvice.setTitle("高风险预警");
+            riskAdvice.setContent("建议立即就医");
+            riskAdvice.setPriority(5);
+            adviceVOList.add(riskAdvice);
+        } else if (riskScore > 0.3) {
+            HealthAdviceVO riskAdvice = new HealthAdviceVO();
+            riskAdvice.setCategory("心血管健康");
+            riskAdvice.setTitle("中等风险预警");
+            riskAdvice.setContent("建议定期检查");
+            riskAdvice.setPriority(3);
+            adviceVOList.add(riskAdvice);
+        }
+
+        SuggestionExample suggestionExample = new SuggestionExample();
+        SuggestionExample.Criteria criteria = suggestionExample.createCriteria();
+
+        if (record.getScore()>70)
+            criteria.andScoreEqualTo(70);
+        else if (record.getScore()>50) {
+            criteria.andScoreEqualTo(50);
+        } else if (record.getScore()>30) {
+            criteria.andScoreEqualTo(30);
+        }else  criteria.andScoreEqualTo(0);
+
+        List<Suggestion> suggestions = suggestionMapper.selectByExample(suggestionExample);
+        Suggestion suggestion = suggestions.get(0);
+
+        HealthAdviceF healthAdviceF = new HealthAdviceF();
+        healthAdviceF.setSuggestion(suggestion.getSuggest());
+        healthAdviceF.setHealthAdviceList(adviceVOList);
+        return healthAdviceF;
+    }
+
+
+
+
+    private String buildMetabolicAdvice(ChdRecord user) {
+        StringBuilder sb = new StringBuilder();
+        if (user.getObesity() == 1) {
+            sb.append("• 制定减重计划（目标BMI<24）\n");
+        }
+        if (user.getPolyuria() == 1) {
+            sb.append("• 记录每日排尿频率\n");
+        }
+        return sb.toString();
+    }
+
+
+    private double calculateRiskScore(ChdRecord user) {
+        List<String> orderedSymptoms = List.of(
+                "age", "gender", "obesity", "polyuria", "polydipsia"
+        );
+        Map<String, Integer> healParams = new HashMap<>();
+        healParams.put("age", user.getUserage()); // 年龄
+        healParams.put("gender", user.getGender().intValue()); // 性别
+        healParams.put("obesity", user.getObesity()); // 肥胖
+        healParams.put("polyuria", user.getPolyuria().intValue()); // 多尿
+        healParams.put("polydipsia", user.getPolydipsia().intValue()); // 多饮
+        double score = 0;
+        for (int i = 0; i < orderedSymptoms.size(); i++) {
+            Integer value = healParams.get(orderedSymptoms.get(i));
+            score += (value != null ? value : 0) * SYMPTOM_WEIGHTS[i];
+        }
+        return score;
+    }
     public  void get(){
          Evaluator evaluator = loadPmml();
          List<InputField> inputFields = evaluator.getInputFields();
@@ -511,5 +638,8 @@ public class PredictServiceImpl implements PredictService {
             default -> 0;    // 确认非肥胖
         };
     }
+
+
+
 }
 
