@@ -1,10 +1,10 @@
 package com.health.vo;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 /**
  * @BelongsProject: sky_test
@@ -14,10 +14,12 @@ import java.io.Serializable;
  * @Version: 1.0
  */
 @Data
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
-public class PredictVO implements Serializable {
-    private Integer score;
-    private Double positive;
-    private Double negative;
+@AllArgsConstructor
+@ApiModel(description = "获取建议")
+public class SuggestionVO {
+
+    private String suggestion;
+    private String score;
 }

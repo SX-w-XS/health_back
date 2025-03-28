@@ -160,4 +160,13 @@ public class AdminController {
         adminService.deleteMessage(ids);
         return Result.success("删除成功");
     }
+
+    @PostMapping("/getSuggestion")
+    @ApiOperation(value = "获取建议")
+    public Result getSuggestion(){
+        log.info("获取建议");
+        return Result.success(adminService.getSuggestion());
+    }
+
+
 }

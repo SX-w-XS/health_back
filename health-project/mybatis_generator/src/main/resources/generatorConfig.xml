@@ -60,5 +60,8 @@
         <table tableName="dm_record" domainObjectName="DmRecord">
                 <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
+        <table tableName="suggestion" domainObjectName="Suggestion">
+            <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
     </context>
 </generatorConfiguration>

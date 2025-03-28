@@ -99,11 +99,18 @@ public class UserController {
         return Result.success("更新成功");
     }
 
-    @PostMapping("/message")
+    @PostMapping("/queryMessage")
     @ApiOperation("公告")
     public Result message(@RequestBody MessageDTO messageDTO) {
         log.info("新闻公告");
         return Result.success(adminService.queryMessage(messageDTO));
+    }
+
+    @PostMapping("/queryAllMessage")
+    @ApiOperation("查询所有公告")
+    public Result queryAllMessage(int pageNum, int pageSize,int limit)    {
+        log.info("查询所有信息");
+        return Result.success(adminService.queryAllMessage(pageNum, pageSize,limit));
     }
 
     @PostMapping("/queryById")

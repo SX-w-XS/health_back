@@ -7,6 +7,7 @@ import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.entities.Message;
 import com.health.entities.User;
+import com.health.vo.SuggestionVO;
 import com.health.vo.UserVO;
 
 import java.util.List;
@@ -31,4 +32,7 @@ public interface AdminService {
     void addMessage(MessageAddDTO messageAddDTO);
 
     void deleteMessage(List<Integer> ids);
+
+    List<SuggestionVO> getSuggestion();
+
 }

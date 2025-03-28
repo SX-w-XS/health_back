@@ -5,10 +5,30 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="positive" jdbcType="DOUBLE" property="positive" />
     <result column="negative" jdbcType="DOUBLE" property="negative" />
+    <result column="userSex" jdbcType="VARCHAR" property="usersex" />
+    <result column="gender" jdbcType="DOUBLE" property="gender" />
+    <result column="polyuria" jdbcType="DOUBLE" property="polyuria" />
+    <result column="polydipsia" jdbcType="DOUBLE" property="polydipsia" />
+    <result column="sundden_weight_less" jdbcType="DOUBLE" property="sunddenWeightLess" />
+    <result column="weakness" jdbcType="DOUBLE" property="weakness" />
+    <result column="polyphagia" jdbcType="DOUBLE" property="polyphagia" />
+    <result column="genital_thrush" jdbcType="DOUBLE" property="genitalThrush" />
+    <result column="delayed_healing" jdbcType="DOUBLE" property="delayedHealing" />
+    <result column="visual_blurring" jdbcType="DOUBLE" property="visualBlurring" />
+    <result column="irritability" jdbcType="DOUBLE" property="irritability" />
+    <result column="partial_paresis" jdbcType="DOUBLE" property="partialParesis" />
+    <result column="muscle_stiff" jdbcType="DOUBLE" property="muscleStiff" />
+    <result column="alopecia" jdbcType="DOUBLE" property="alopecia" />
+    <result column="obesity" jdbcType="INTEGER" property="obesity" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="userAge" jdbcType="INTEGER" property="userage" />
+    <result column="itching" jdbcType="DOUBLE" property="itching" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -78,7 +98,10 @@
     <!--
       WARNING - @mbg.generated
     -->
-    user_id, username, positive, negative
+    id, user_id, username, positive, negative, userSex, gender, polyuria, polydipsia, 
+    sundden_weight_less, weakness, polyphagia, genital_thrush, delayed_healing, visual_blurring, 
+    irritability, partial_paresis, muscle_stiff, alopecia, obesity, score, create_time, 
+    userAge, itching
   </sql>
   <select id="selectByExample" parameterType="com.health.entities.ChdRecordExample" resultMap="BaseResultMap">
     <!--
@@ -121,6 +144,9 @@
     -->
     update chd_record
     <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=INTEGER},
+      </if>
       <if test="row.userId != null">
         user_id = #{row.userId,jdbcType=INTEGER},
       </if>
@@ -133,6 +159,63 @@
       <if test="row.negative != null">
         negative = #{row.negative,jdbcType=DOUBLE},
       </if>
+      <if test="row.usersex != null">
+        userSex = #{row.usersex,jdbcType=VARCHAR},
+      </if>
+      <if test="row.gender != null">
+        gender = #{row.gender,jdbcType=DOUBLE},
+      </if>
+      <if test="row.polyuria != null">
+        polyuria = #{row.polyuria,jdbcType=DOUBLE},
+      </if>
+      <if test="row.polydipsia != null">
+        polydipsia = #{row.polydipsia,jdbcType=DOUBLE},
+      </if>
+      <if test="row.sunddenWeightLess != null">
+        sundden_weight_less = #{row.sunddenWeightLess,jdbcType=DOUBLE},
+      </if>
+      <if test="row.weakness != null">
+        weakness = #{row.weakness,jdbcType=DOUBLE},
+      </if>
+      <if test="row.polyphagia != null">
+        polyphagia = #{row.polyphagia,jdbcType=DOUBLE},
+      </if>
+      <if test="row.genitalThrush != null">
+        genital_thrush = #{row.genitalThrush,jdbcType=DOUBLE},
+      </if>
+      <if test="row.delayedHealing != null">
+        delayed_healing = #{row.delayedHealing,jdbcType=DOUBLE},
+      </if>
+      <if test="row.visualBlurring != null">
+        visual_blurring = #{row.visualBlurring,jdbcType=DOUBLE},
+      </if>
+      <if test="row.irritability != null">
+        irritability = #{row.irritability,jdbcType=DOUBLE},
+      </if>
+      <if test="row.partialParesis != null">
+        partial_paresis = #{row.partialParesis,jdbcType=DOUBLE},
+      </if>
+      <if test="row.muscleStiff != null">
+        muscle_stiff = #{row.muscleStiff,jdbcType=DOUBLE},
+      </if>
+      <if test="row.alopecia != null">
+        alopecia = #{row.alopecia,jdbcType=DOUBLE},
+      </if>
+      <if test="row.obesity != null">
+        obesity = #{row.obesity,jdbcType=INTEGER},
+      </if>
+      <if test="row.score != null">
+        score = #{row.score,jdbcType=INTEGER},
+      </if>
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.userage != null">
+        userAge = #{row.userage,jdbcType=INTEGER},
+      </if>
+      <if test="row.itching != null">
+        itching = #{row.itching,jdbcType=DOUBLE},
+      </if>
     </set>
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -143,10 +226,30 @@
       WARNING - @mbg.generated
     -->
     update chd_record
-    set user_id = #{row.userId,jdbcType=INTEGER},
+    set id = #{row.id,jdbcType=INTEGER},
+      user_id = #{row.userId,jdbcType=INTEGER},
       username = #{row.username,jdbcType=VARCHAR},
       positive = #{row.positive,jdbcType=DOUBLE},
-      negative = #{row.negative,jdbcType=DOUBLE}
+      negative = #{row.negative,jdbcType=DOUBLE},
+      userSex = #{row.usersex,jdbcType=VARCHAR},
+      gender = #{row.gender,jdbcType=DOUBLE},
+      polyuria = #{row.polyuria,jdbcType=DOUBLE},
+      polydipsia = #{row.polydipsia,jdbcType=DOUBLE},
+      sundden_weight_less = #{row.sunddenWeightLess,jdbcType=DOUBLE},
+      weakness = #{row.weakness,jdbcType=DOUBLE},
+      polyphagia = #{row.polyphagia,jdbcType=DOUBLE},
+      genital_thrush = #{row.genitalThrush,jdbcType=DOUBLE},
+      delayed_healing = #{row.delayedHealing,jdbcType=DOUBLE},
+      visual_blurring = #{row.visualBlurring,jdbcType=DOUBLE},
+      irritability = #{row.irritability,jdbcType=DOUBLE},
+      partial_paresis = #{row.partialParesis,jdbcType=DOUBLE},
+      muscle_stiff = #{row.muscleStiff,jdbcType=DOUBLE},
+      alopecia = #{row.alopecia,jdbcType=DOUBLE},
+      obesity = #{row.obesity,jdbcType=INTEGER},
+      score = #{row.score,jdbcType=INTEGER},
+      create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      userAge = #{row.userage,jdbcType=INTEGER},
+      itching = #{row.itching,jdbcType=DOUBLE}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

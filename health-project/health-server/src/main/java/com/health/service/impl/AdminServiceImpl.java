@@ -7,21 +7,21 @@ import com.health.dto.MessageAddDTO;
 import com.health.dto.MessageDTO;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
-import com.health.entities.Message;
-import com.health.entities.MessageExample;
-import com.health.entities.User;
-import com.health.entities.UserExample;
+import com.health.entities.*;
 import com.health.exception.AccountNotFoundException;
 import com.health.exception.PasswordErrorException;
 import com.health.mapper.MessageMapper;
+import com.health.mapper.SuggestionMapper;
 import com.health.mapper.UserMapper;
 import com.health.service.AdminService;
+import com.health.vo.SuggestionVO;
 import com.health.vo.UserVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +41,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private MessageMapper messageMapper;
+
+    @Resource
+    private SuggestionMapper suggestionMapper;
 
     @Override
     public User login(UserLoginDTO userLoginDTO) {
@@ -220,4 +223,19 @@ public class AdminServiceImpl implements AdminService {
         MessageExample.Criteria criteria = messageExample.createCriteria();
         criteria.andMessageIdIn(ids);
         messageMapper.deleteByExample(messageExample);
-}}
+}
+
+    @Override
+    public  List<SuggestionVO> getSuggestion() {
+
+        List<Suggestion> suggestions = suggestionMapper.selectAll();
+        List<SuggestionVO> suggestionVOS = new ArrayList<>();
+        for (Suggestion suggestion : suggestions) {
+            SuggestionVO suggestionVO = new SuggestionVO();
+            BeanUtils.copyProperties(suggestion,suggestionVO);
+            suggestionVOS.add(suggestionVO);
+        }
+
+        return suggestionVOS;
+    }
+}

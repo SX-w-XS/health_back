@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.health.mapper.MessageMapper">
-  <resultMap id="BaseResultMap" type="com.health.entities.Message">
+<mapper namespace="com.health.mapper.SuggestionMapper">
+  <resultMap id="BaseResultMap" type="com.health.entities.Suggestion">
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="MESSAGE_ID" jdbcType="INTEGER" property="messageId" />
-    <result column="TITLE" jdbcType="VARCHAR" property="title" />
-    <result column="URL" jdbcType="VARCHAR" property="url" />
-    <result column="KIND" jdbcType="INTEGER" property="kind" />
-    <result column="CREATETIME" jdbcType="TIMESTAMP" property="createtime" />
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="score" jdbcType="INTEGER" property="score" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.health.entities.Message">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.health.entities.Suggestion">
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="CONTENT" jdbcType="LONGVARCHAR" property="content" />
+    <result column="suggest" jdbcType="LONGVARCHAR" property="suggest" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -85,15 +82,15 @@
     <!--
       WARNING - @mbg.generated
     -->
-    MESSAGE_ID, TITLE, URL, KIND, CREATETIME
+    id, score
   </sql>
   <sql id="Blob_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    CONTENT
+    suggest
   </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.health.entities.MessageExample" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExampleWithBLOBs" parameterType="com.health.entities.SuggestionExample" resultMap="ResultMapWithBLOBs">
     <!--
       WARNING - @mbg.generated
     -->
@@ -104,7 +101,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from message
+    from suggestion
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -112,7 +109,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="com.health.entities.MessageExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.health.entities.SuggestionExample" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated
     -->
@@ -121,7 +118,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from message
+    from suggestion
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -129,20 +126,20 @@
       order by ${orderByClause}
     </if>
   </select>
-  <delete id="deleteByExample" parameterType="com.health.entities.MessageExample">
+  <delete id="deleteByExample" parameterType="com.health.entities.SuggestionExample">
     <!--
       WARNING - @mbg.generated
     -->
-    delete from message
+    delete from suggestion
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <select id="countByExample" parameterType="com.health.entities.MessageExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.health.entities.SuggestionExample" resultType="java.lang.Long">
     <!--
       WARNING - @mbg.generated
     -->
-    select count(*) from message
+    select count(*) from suggestion
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -151,25 +148,16 @@
     <!--
       WARNING - @mbg.generated
     -->
-    update message
+    update suggestion
     <set>
-      <if test="row.messageId != null">
-        MESSAGE_ID = #{row.messageId,jdbcType=INTEGER},
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=INTEGER},
       </if>
-      <if test="row.title != null">
-        TITLE = #{row.title,jdbcType=VARCHAR},
+      <if test="row.score != null">
+        score = #{row.score,jdbcType=INTEGER},
       </if>
-      <if test="row.url != null">
-        URL = #{row.url,jdbcType=VARCHAR},
-      </if>
-      <if test="row.kind != null">
-        KIND = #{row.kind,jdbcType=INTEGER},
-      </if>
-      <if test="row.createtime != null">
-        CREATETIME = #{row.createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="row.content != null">
-        CONTENT = #{row.content,jdbcType=LONGVARCHAR},
+      <if test="row.suggest != null">
+        suggest = #{row.suggest,jdbcType=LONGVARCHAR},
       </if>
     </set>
     <if test="example != null">
@@ -180,13 +168,10 @@
     <!--
       WARNING - @mbg.generated
     -->
-    update message
-    set MESSAGE_ID = #{row.messageId,jdbcType=INTEGER},
-      TITLE = #{row.title,jdbcType=VARCHAR},
-      URL = #{row.url,jdbcType=VARCHAR},
-      KIND = #{row.kind,jdbcType=INTEGER},
-      CREATETIME = #{row.createtime,jdbcType=TIMESTAMP},
-      CONTENT = #{row.content,jdbcType=LONGVARCHAR}
+    update suggestion
+    set id = #{row.id,jdbcType=INTEGER},
+      score = #{row.score,jdbcType=INTEGER},
+      suggest = #{row.suggest,jdbcType=LONGVARCHAR}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -195,12 +180,9 @@
     <!--
       WARNING - @mbg.generated
     -->
-    update message
-    set MESSAGE_ID = #{row.messageId,jdbcType=INTEGER},
-      TITLE = #{row.title,jdbcType=VARCHAR},
-      URL = #{row.url,jdbcType=VARCHAR},
-      KIND = #{row.kind,jdbcType=INTEGER},
-      CREATETIME = #{row.createtime,jdbcType=TIMESTAMP}
+    update suggestion
+    set id = #{row.id,jdbcType=INTEGER},
+      score = #{row.score,jdbcType=INTEGER}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

@@ -49,4 +49,10 @@ public class PredictController {
         PredictDMVO predict = predictService.predictDM(userPredictDMDTO);
         return Result.success(predict);
     }
+
+    /*@PostMapping("/suggestion")
+    @ApiOperation(value = "综合建议")
+    public Result<String> suggestion(@RequestBody UserLoginDTO userLoginDTO) {
+
+    }*/
 }
