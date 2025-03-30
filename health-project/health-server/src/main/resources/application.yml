@@ -12,6 +12,18 @@ spring:
     url: jdbc:mysql://localhost:3306/health?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
     username: root
     password: root
+    druid:
+      min-idle: 5 # 最小空闲连接数
+      max-active: 20 # 最大活动连接数
+      max-wait: 60000 # 获取连接的最大等待时间，单位为毫秒
+      time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位是毫秒
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
 
 
 mybatis:

@@ -24,4 +24,12 @@ public interface ChdRecordMapper extends Mapper<ChdRecord> {
 
     @Select("select distinct count(*) from chd_record where positive > 0.9")
     Integer selectHighProLevel();
+
+    //根据用户id查询最新的记录
+    @Select("select * from chd_record where user_id = #{userId} order by create_time desc limit 1")
+    ChdRecord selectLastRecordByUserId(Integer userId);
+
+    //统计单个用户的记录数
+    @Select("select count(*) from chd_record where user_id = #{userId}")
+    Integer selectCountByUserId(Integer userId);
 }

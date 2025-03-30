@@ -87,5 +87,8 @@ public class UserPredictDTO implements Serializable {
     private Double obesityNo;
     private Double obesityYes;
 
-
+    @ApiModelProperty("身高")
+    private Double height;
+    @ApiModelProperty("体重")
+    private Double weight;
 }

@@ -5,6 +5,7 @@ import com.health.dto.UserLoginDTO;
 import com.health.dto.UserSignUpDTO;
 import com.health.entities.Message;
 import com.health.entities.User;
+import com.health.vo.CountDataVO;
 import com.health.vo.UserVO;
 
 import java.util.List;
@@ -25,4 +26,6 @@ public interface UserService {
     void update(UserDTO user);
 
     List<Message> getMessages();
+
+    CountDataVO countData(Integer userId);
 }

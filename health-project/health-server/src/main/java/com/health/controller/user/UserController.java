@@ -123,4 +123,10 @@ public class UserController {
         return Result.success(adminService.queryById(id));
     }
 
+    @PostMapping("/countData")
+    @ApiOperation(value = "统计用户数据")
+    public Result countData(Integer userID) {
+        return Result.success(userService.countData(userID));
+    }
+
 }

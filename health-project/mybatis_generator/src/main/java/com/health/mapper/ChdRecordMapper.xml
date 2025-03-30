@@ -29,6 +29,8 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="userAge" jdbcType="INTEGER" property="userage" />
     <result column="itching" jdbcType="DOUBLE" property="itching" />
+    <result column="weight" jdbcType="DOUBLE" property="weight" />
+    <result column="height" jdbcType="DOUBLE" property="height" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -101,7 +103,7 @@
     id, user_id, username, positive, negative, userSex, gender, polyuria, polydipsia, 
     sundden_weight_less, weakness, polyphagia, genital_thrush, delayed_healing, visual_blurring, 
     irritability, partial_paresis, muscle_stiff, alopecia, obesity, score, create_time, 
-    userAge, itching
+    userAge, itching, weight, height
   </sql>
   <select id="selectByExample" parameterType="com.health.entities.ChdRecordExample" resultMap="BaseResultMap">
     <!--
@@ -216,6 +218,12 @@
       <if test="row.itching != null">
         itching = #{row.itching,jdbcType=DOUBLE},
       </if>
+      <if test="row.weight != null">
+        weight = #{row.weight,jdbcType=DOUBLE},
+      </if>
+      <if test="row.height != null">
+        height = #{row.height,jdbcType=DOUBLE},
+      </if>
     </set>
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -249,7 +257,9 @@
       score = #{row.score,jdbcType=INTEGER},
       create_time = #{row.createTime,jdbcType=TIMESTAMP},
       userAge = #{row.userage,jdbcType=INTEGER},
-      itching = #{row.itching,jdbcType=DOUBLE}
+      itching = #{row.itching,jdbcType=DOUBLE},
+      weight = #{row.weight,jdbcType=DOUBLE},
+      height = #{row.height,jdbcType=DOUBLE}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

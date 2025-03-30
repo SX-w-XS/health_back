@@ -133,6 +133,16 @@ public class ChdRecord {
     private Double itching;
 
     /**
+     * 体重
+     */
+    private Double weight;
+
+    /**
+     * 高
+     */
+    private Double height;
+
+    /**
      * @return id
      */
     public Integer getId() {
@@ -546,5 +556,41 @@ public class ChdRecord {
      */
     public void setItching(Double itching) {
         this.itching = itching;
+    }
+
+    /**
+     * 获取体重
+     *
+     * @return weight - 体重
+     */
+    public Double getWeight() {
+        return weight;
+    }
+
+    /**
+     * 设置体重
+     *
+     * @param weight 体重
+     */
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    /**
+     * 获取高
+     *
+     * @return height - 高
+     */
+    public Double getHeight() {
+        return height;
+    }
+
+    /**
+     * 设置高
+     *
+     * @param height 高
+     */
+    public void setHeight(Double height) {
+        this.height = height;
     }
 }

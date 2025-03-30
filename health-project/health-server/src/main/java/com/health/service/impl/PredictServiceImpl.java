@@ -47,6 +47,13 @@ public class PredictServiceImpl implements PredictService {
     public PredictVO predict(UserPredictDTO predictDTO) {
 
         Map<String,Double> inputvector=new HashMap<String ,Double>();
+
+        if (predictDTO.getGenderFemale() ==0)
+          predictDTO.setUserSex("0");
+        else if (predictDTO.getGenderFemale() ==1) {
+            predictDTO.setUserSex("1");
+        }else
+            predictDTO.setUserSex("-1");
         //加载模型
         Evaluator evaluator = loadPmml();
 
@@ -279,6 +286,8 @@ public class PredictServiceImpl implements PredictService {
         Double score = riskCalculator(predictDTO);
         chdRecord.setScore(score.intValue());
         chdRecord.setCreateTime(new Date());
+        chdRecord.setHeight(predictDTO.getHeight());
+        chdRecord.setWeight(predictDTO.getWeight());
         chdRecordMapper.insert(chdRecord);
 
        predictVO.setScore(score.intValue());
