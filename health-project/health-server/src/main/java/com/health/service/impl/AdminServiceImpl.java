@@ -17,6 +17,7 @@ import com.health.mapper.UserMapper;
 import com.health.service.AdminService;
 import com.health.vo.CountUserVO;
 import com.health.vo.SuggestionVO;
+import com.health.vo.UserGrowthVO;
 import com.health.vo.UserVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @BelongsProject: sky_test
@@ -170,7 +174,7 @@ public class AdminServiceImpl implements AdminService {
         }
 
         if(user.getDiseaseId() != null){
-            criteria.andDiseaseIdEqualTo(user.getDiseaseId());
+            criteria.andDiseaseIdEqualTo(String.valueOf(user.getDiseaseId()));
         }
 
         List<User> users = userMapper.selectByExample(userExample);
@@ -264,4 +268,65 @@ public class AdminServiceImpl implements AdminService {
         countUserVO.setMessageCount(messageMapper.countMessage());
         return countUserVO;
     }
+
+
+
+
+    public List<UserGrowthVO> getGrowthSeries(LocalDate start, LocalDate end) {
+        // 查询实际数据
+        List<Object[]> rawData = userMapper.findDailyGrowth(start, end);
+        Map<LocalDate, Integer> dataMap = rawData.stream()
+                .collect(Collectors.toMap(
+                        arr -> LocalDate.parse(arr[0].toString()),
+                        arr -> Integer.parseInt(arr[1].toString())
+                ));
+
+        // 生成完整日期序列
+        List<UserGrowthVO> result = new ArrayList<>();
+        int total = 0;
+
+        for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
+            int daily = dataMap.getOrDefault(date, 0);
+            total += daily;
+
+            UserGrowthVO growth = new UserGrowthVO();
+            growth.setDate(date);
+            growth.setDailyCount(daily);
+            growth.setTotalCount(total);
+            result.add(growth);
+        }
+
+        return result;
+    }
+    /**
+     * 简单线性预测
+     * @param history 历史数据（至少包含7天）
+     * @param days 预测天数
+     * @return 预测结果（包含累计总数）
+     */
+    public List<UserGrowthVO> simplePredict(List<UserGrowthVO> history, int days) {
+        // 计算日均增长
+        double avgGrowth = history.stream()
+                .mapToInt(UserGrowthVO::getDailyCount)
+                .average()
+                .orElse(0);
+
+        // 生成预测数据
+        List<UserGrowthVO> forecast = new ArrayList<>();
+        int currentTotal = history.get(history.size()-1).getTotalCount();
+
+        for (int i = 1; i <= days; i++) {
+            LocalDate date = history.get(history.size()-1).getDate().plusDays(i);
+            currentTotal += avgGrowth;
+
+            UserGrowthVO growth = new UserGrowthVO();
+            growth.setDate(date);
+            growth.setDailyCount((int) Math.round(avgGrowth));
+            growth.setTotalCount(currentTotal);
+            forecast.add(growth);
+        }
+
+        return forecast;
+    }
 }
+

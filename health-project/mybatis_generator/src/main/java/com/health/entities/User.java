@@ -93,6 +93,12 @@ public class User {
     @Column(name = "doctor_id")
     private String doctorId;
 
+    @Column(name = "create_time")
+    private Date createTime;
+
+    @Column(name = "update_time")
+    private Date updateTime;
+
     /**
      * 获取用户ID
      *
@@ -361,5 +367,33 @@ public class User {
      */
     public void setDoctorId(String doctorId) {
         this.doctorId = doctorId;
+    }
+
+    /**
+     * @return createTime
+     */
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * @param createTime
+     */
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    /**
+     * @return updateTime
+     */
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    /**
+     * @param updateTime
+     */
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

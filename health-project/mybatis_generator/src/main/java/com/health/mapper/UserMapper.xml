@@ -20,6 +20,8 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="disease_id" jdbcType="VARCHAR" property="diseaseId" />
     <result column="doctor_id" jdbcType="VARCHAR" property="doctorId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -90,7 +92,7 @@
       WARNING - @mbg.generated
     -->
     user_id, nickname, user_img, password, user_number, role, email, phone, registration_date, 
-    username, user_sex, user_age, status, disease_id, doctor_id
+    username, user_sex, user_age, status, disease_id, doctor_id, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.health.entities.UserExample" resultMap="BaseResultMap">
     <!--
@@ -178,6 +180,12 @@
       <if test="row.doctorId != null">
         doctor_id = #{row.doctorId,jdbcType=VARCHAR},
       </if>
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.updateTime != null">
+        update_time = #{row.updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -202,7 +210,9 @@
       user_age = #{row.userAge,jdbcType=INTEGER},
       status = #{row.status,jdbcType=INTEGER},
       disease_id = #{row.diseaseId,jdbcType=VARCHAR},
-      doctor_id = #{row.doctorId,jdbcType=VARCHAR}
+      doctor_id = #{row.doctorId,jdbcType=VARCHAR},
+      create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      update_time = #{row.updateTime,jdbcType=TIMESTAMP}
     <if test="example != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

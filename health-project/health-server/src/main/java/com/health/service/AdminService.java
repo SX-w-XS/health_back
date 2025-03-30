@@ -9,8 +9,10 @@ import com.health.entities.Message;
 import com.health.entities.User;
 import com.health.vo.CountUserVO;
 import com.health.vo.SuggestionVO;
+import com.health.vo.UserGrowthVO;
 import com.health.vo.UserVO;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface AdminService {
@@ -39,4 +41,8 @@ public interface AdminService {
     void addUser(UserDTO userAddDTO);
 
     CountUserVO queryCount();
+
+    List<UserGrowthVO> getGrowthSeries(LocalDate startDate, LocalDate endDate);
+
+    List<UserGrowthVO> simplePredict(List<UserGrowthVO> history, int futureDays);
 }

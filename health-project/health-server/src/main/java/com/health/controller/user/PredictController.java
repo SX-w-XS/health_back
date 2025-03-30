@@ -57,4 +57,5 @@ public class PredictController {
               log.info("综合建议：{}", suggestionDTO);
         return Result.success(predictService.generateAdvice(suggestionDTO));
     }
+
 }

@@ -83,11 +83,23 @@ public class User {
      */
     private Integer status;
 
+    /**
+     * 疾病id
+     */
     @Column(name = "disease_id")
-    private Integer diseaseId;
+    private String diseaseId;
 
+    /**
+     * 医生id
+     */
     @Column(name = "doctor_id")
     private String doctorId;
+
+    @Column(name = "create_time")
+    private Date createTime;
+
+    @Column(name = "update_time")
+    private Date updateTime;
 
     /**
      * 获取用户ID
@@ -324,30 +336,66 @@ public class User {
     }
 
     /**
-     * @return diseaseId
+     * 获取疾病id
+     *
+     * @return diseaseId - 疾病id
      */
-    public Integer getDiseaseId() {
+    public String getDiseaseId() {
         return diseaseId;
     }
 
     /**
-     * @param diseaseId
+     * 设置疾病id
+     *
+     * @param diseaseId 疾病id
      */
-    public void setDiseaseId(Integer diseaseId) {
+    public void setDiseaseId(String diseaseId) {
         this.diseaseId = diseaseId;
     }
 
     /**
-     * @return doctorId
+     * 获取医生id
+     *
+     * @return doctorId - 医生id
      */
     public String getDoctorId() {
         return doctorId;
     }
 
     /**
-     * @param doctorId
+     * 设置医生id
+     *
+     * @param doctorId 医生id
      */
     public void setDoctorId(String doctorId) {
         this.doctorId = doctorId;
+    }
+
+    /**
+     * @return createTime
+     */
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    /**
+     * @param createTime
+     */
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    /**
+     * @return updateTime
+     */
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    /**
+     * @param updateTime
+     */
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

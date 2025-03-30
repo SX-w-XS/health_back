@@ -13,6 +13,7 @@ import com.health.result.Result;
 import com.health.service.AdminService;
 import com.health.service.UserService;
 import com.health.utils.JwtUtil;
+import com.health.vo.UserGrowthVO;
 import com.health.vo.UserLoginVO;
 import com.health.vo.UserVO;
 import io.swagger.annotations.Api;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,5 +186,26 @@ public class AdminController {
     public Result queryCount() {
            log.info("统计总用户数");
            return Result.success(adminService.queryCount());
+    }
+
+
+    @PostMapping("/queryPerict")
+    @ApiOperation(value = "用户增长预测")
+    public Result<Map<String, Object>> getGrowthData(@RequestParam(defaultValue = "30") int pastDays,
+                                                     @RequestParam(defaultValue = "7") int futureDays){
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(pastDays - 1);
+
+        // 历史数据
+        List<UserGrowthVO> history = adminService.getGrowthSeries(startDate, endDate);
+
+        // 预测数据
+        List<UserGrowthVO> forecast = adminService.simplePredict(history, futureDays);
+
+        return Result.success(Map.of(
+                "history", history,
+                "forecast", forecast,
+                "currentTotal", !history.isEmpty() ? history.get(history.size()-1).getTotalCount() : 0
+        ));
     }
 }
