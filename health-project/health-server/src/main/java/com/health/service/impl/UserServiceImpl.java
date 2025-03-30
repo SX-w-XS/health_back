@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,6 +77,8 @@ public class UserServiceImpl implements UserService {
             User user = new User();
             BeanUtils.copyProperties(userSignUpDTO,user);
             user.setPassword(password);
+            user.setUpdateTime(new Date());
+            user.setCreateTime(new Date());
             userMapper.insert(user);}
 
         }
@@ -86,6 +89,7 @@ public class UserServiceImpl implements UserService {
     public void update(UserDTO userDTO) {
         User user=new User();
         BeanUtils.copyProperties(userDTO,user);
+        user.setUpdateTime(new Date());
         userMapper.updateByPrimaryKeySelective(user);
     }
 
