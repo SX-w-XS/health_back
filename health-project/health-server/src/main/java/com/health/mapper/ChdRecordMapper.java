@@ -12,4 +12,16 @@ public interface ChdRecordMapper extends Mapper<ChdRecord> {
 
     @Select("select * from chd_record where user_id = #{userId} order by create_time desc limit 1")
     ChdRecord selectLastRecord(@Param("userId") String userId);
+
+    @Select("select distinct count(*) from chd_record where positive > 0.8")
+    Integer selectHighLevel();
+
+    @Select("select distinct count(*) from chd_record where positive > 0.5 and positive < 0.8")
+    Integer selectMidLevel();
+
+    @Select("select distinct count(*) from chd_record where positive < 0.5")
+    Integer selectLowLevel();
+
+    @Select("select distinct count(*) from chd_record where positive > 0.9")
+    Integer selectHighProLevel();
 }

@@ -68,10 +68,13 @@ public class PredictServiceImpl implements PredictService {
         inputvector.put("Gender_Female",predictDTO.getGenderFemale());
         switch (predictDTO.getUserSex()){
             case "0":  chdRecord.setUsersex("0");
+                       chdRecord.setGender(0.0);
                 break;
             case "1":  chdRecord.setUsersex("1");
+                       chdRecord.setGender(1.0);
                 break;
             default: chdRecord.setUsersex("-1");
+                     chdRecord.setGender(-1.0);
                 break;
         }
 

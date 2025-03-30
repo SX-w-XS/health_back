@@ -10,10 +10,12 @@ import com.health.dto.UserLoginDTO;
 import com.health.entities.*;
 import com.health.exception.AccountNotFoundException;
 import com.health.exception.PasswordErrorException;
+import com.health.mapper.ChdRecordMapper;
 import com.health.mapper.MessageMapper;
 import com.health.mapper.SuggestionMapper;
 import com.health.mapper.UserMapper;
 import com.health.service.AdminService;
+import com.health.vo.CountUserVO;
 import com.health.vo.SuggestionVO;
 import com.health.vo.UserVO;
 import org.springframework.beans.BeanUtils;
@@ -44,6 +46,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Resource
     private SuggestionMapper suggestionMapper;
+
+    @Resource
+    private ChdRecordMapper chdRecordMapper;
 
     @Override
     public User login(UserLoginDTO userLoginDTO) {
@@ -237,5 +242,26 @@ public class AdminServiceImpl implements AdminService {
         }
 
         return suggestionVOS;
+    }
+
+    @Override
+    public void addUser(UserDTO userAddDTO) {
+        User user = new User();
+        BeanUtils.copyProperties(userAddDTO,user);
+        userMapper.insert(user);
+    }
+
+    @Override
+    public CountUserVO queryCount() {
+        CountUserVO countUserVO = new CountUserVO();
+        countUserVO.setTotal(userMapper.selectTotal());
+        countUserVO.setMan(userMapper.selectMan());
+        countUserVO.setWoman(userMapper.selectWoman());
+        countUserVO.setHighLevelCVD(chdRecordMapper.selectHighLevel());
+        countUserVO.setLowLevelCVD(chdRecordMapper.selectLowLevel());
+        countUserVO.setMidLevelCVD(chdRecordMapper.selectMidLevel());
+        countUserVO.setHighProLevelCVD(chdRecordMapper.selectHighProLevel());
+        countUserVO.setMessageCount(messageMapper.countMessage());
+        return countUserVO;
     }
 }

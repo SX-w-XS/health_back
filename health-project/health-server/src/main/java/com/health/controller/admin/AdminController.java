@@ -169,4 +169,20 @@ public class AdminController {
     }
 
 
+    @PostMapping("/addUser")
+    @ApiOperation(value = "添加用户")
+    public Result addUser(@RequestBody UserDTO userAddDTO) {
+        log.info("添加用户：{}", userAddDTO);
+        adminService.addUser(userAddDTO);
+        return Result.success("添加成功");
+    }
+
+
+    //统计接口
+    @PostMapping("/queryCount")
+    @ApiOperation(value = "统计总用户数")
+    public Result queryCount() {
+           log.info("统计总用户数");
+           return Result.success(adminService.queryCount());
+    }
 }

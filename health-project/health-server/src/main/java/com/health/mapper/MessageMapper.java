@@ -11,4 +11,7 @@ public interface MessageMapper extends Mapper<Message> {
 
     @Select("select * from message order by MESSAGE_ID desc limit 5")
     List<Message> selectMessageFive();
+
+    @Select("select count(*) from message")
+    Integer countMessage();
 }

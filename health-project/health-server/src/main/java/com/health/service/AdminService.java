@@ -7,6 +7,7 @@ import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.entities.Message;
 import com.health.entities.User;
+import com.health.vo.CountUserVO;
 import com.health.vo.SuggestionVO;
 import com.health.vo.UserVO;
 
@@ -35,4 +36,7 @@ public interface AdminService {
 
     List<SuggestionVO> getSuggestion();
 
+    void addUser(UserDTO userAddDTO);
+
+    CountUserVO queryCount();
 }
