@@ -32,7 +32,7 @@ public class WebSocketChatController  {
     @Autowired
     private ChatService chatService;
     @MessageMapping("/chat.sendMessage")
-    public void handleChatMessage(ChatMessage message) {
+    public void handleChatMessage(ChatMessageD message) {
         // 消息处理由ChatService完成
         chatService.saveAndSendMessage(message);
     }

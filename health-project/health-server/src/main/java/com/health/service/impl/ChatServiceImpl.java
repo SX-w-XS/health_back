@@ -36,10 +36,7 @@ public class ChatServiceImpl implements ChatService {
 
     }
 
-    @Override
-    public void saveAndSendMessage(ChatMessage message) {
 
-    }
 
 
     public void saveAndSendMessage(ChatMessageD message) {

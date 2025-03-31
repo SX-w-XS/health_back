@@ -8,6 +8,7 @@ import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.dto.UserSignUpDTO;
 import com.health.entities.ChatMessage;
+import com.health.entities.ChatMessageD;
 import com.health.entities.Message;
 import com.health.entities.User;
 import com.health.properties.JwtProperties;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -55,10 +57,12 @@ public class UserController {
 
     @Resource
     private ChatService chatService;
+    @Autowired
+    private HttpSession httpSession;
 
     @PostMapping("/login")
     @ApiOperation(value = "用户登录")
-    public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
+    public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO, HttpSession session) {
         log.info("用户登录：{}", userLoginDTO);
         User user= userService.login(userLoginDTO);
 
@@ -74,6 +78,7 @@ public class UserController {
         BeanUtils.copyProperties(user, userLoginVO);
         userLoginVO.setUserId(user.getUserId());
         userLoginVO.setToken(token);
+        httpSession.setAttribute("nickname",user.getNickname());
         return Result.success(userLoginVO);
     }
 
@@ -133,14 +138,4 @@ public class UserController {
     }
 
 
-    @PostMapping("/chat/history")
-    public Result<List<ChatMessage>> getHistory(@RequestParam(defaultValue = "50") int limit) {
-        return Result.success(chatService.getRecentMessages(limit));
-    }
-
-    @PostMapping("/send")
-    public Result sendMessage(@Valid @RequestBody ChatMessage message) {
-        chatService.saveAndSendMessage(message);
-        return Result.success();
-    }
 }
