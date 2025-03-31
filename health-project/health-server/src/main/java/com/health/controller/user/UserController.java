@@ -7,11 +7,13 @@ import com.health.dto.MessageDTO;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.dto.UserSignUpDTO;
+import com.health.entities.ChatMessage;
 import com.health.entities.Message;
 import com.health.entities.User;
 import com.health.properties.JwtProperties;
 import com.health.result.Result;
 import com.health.service.AdminService;
+import com.health.service.ChatService;
 import com.health.service.UserService;
 import com.health.utils.JwtUtil;
 import com.health.vo.UserLoginVO;
@@ -22,12 +24,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,10 +48,13 @@ public class UserController {
     private JwtProperties jwtProperties;
 
     @Resource
-    UserService userService;
+    private UserService userService;
 
     @Resource
-    AdminService adminService;
+    private AdminService adminService;
+
+    @Resource
+    private ChatService chatService;
 
     @PostMapping("/login")
     @ApiOperation(value = "用户登录")
@@ -129,4 +132,15 @@ public class UserController {
         return Result.success(userService.countData(userID));
     }
 
+
+    @PostMapping("/chat/history")
+    public Result<List<ChatMessage>> getHistory(@RequestParam(defaultValue = "50") int limit) {
+        return Result.success(chatService.getRecentMessages(limit));
+    }
+
+    @PostMapping("/send")
+    public Result sendMessage(@Valid @RequestBody ChatMessage message) {
+        chatService.saveAndSendMessage(message);
+        return Result.success();
+    }
 }

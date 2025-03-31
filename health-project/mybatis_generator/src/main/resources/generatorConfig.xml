@@ -63,5 +63,8 @@
         <table tableName="suggestion" domainObjectName="Suggestion">
             <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
+        <table tableName="chat_message" domainObjectName="ChatMessage">
+                <generatedKey column="id" sqlStatement="JDBC"/>
+        </table>
     </context>
 </generatorConfiguration>

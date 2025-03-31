@@ -208,4 +208,5 @@ public class AdminController {
                 "currentTotal", !history.isEmpty() ? history.get(history.size()-1).getTotalCount() : 0
         ));
     }
+
 }
