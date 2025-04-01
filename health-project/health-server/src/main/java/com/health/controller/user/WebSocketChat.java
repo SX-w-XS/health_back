@@ -3,13 +3,19 @@ package com.health.controller.user;
 import com.alibaba.fastjson.JSON;
 import com.health.config.GetHttpSession;
 import com.health.entities.ChatMessage;
+import com.health.entities.ChatMessageD;
+import com.health.service.ChatService;
 import com.health.utils.MessageUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,6 +32,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebSocketChat {
     private  static  final Map<String,Session> onlineUsers =new ConcurrentHashMap<>();
     private  HttpSession httpSession;
+
+    @Resource
+    ChatService chatService;
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig config)    {
@@ -65,6 +74,9 @@ public class WebSocketChat {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        ChatMessageD chatMessageD = new ChatMessageD();
+        BeanUtils.copyProperties(chatMessage,chatMessageD);
+        chatService.saveAndSendMessage(chatMessageD);
     }
 
     @OnClose
