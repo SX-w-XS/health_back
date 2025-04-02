@@ -254,6 +254,8 @@ public class AdminServiceImpl implements AdminService {
         BeanUtils.copyProperties(userAddDTO,user);
         user.setUpdateTime(new Date());
         user.setCreateTime(new Date());
+        if(userAddDTO.getRole() == null){
+        user.setRole(0);}
         userMapper.insert(user);
     }
 
