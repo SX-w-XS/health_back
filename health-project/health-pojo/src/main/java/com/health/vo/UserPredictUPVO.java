@@ -1,12 +1,11 @@
 package com.health.vo;
 
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -17,11 +16,9 @@ import java.util.Date;
  * @Version: 1.0
  */
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserGrowthVO {
-    private LocalDate date;
-    private int dailyCount;  // 当日新增用户数
-    private int totalCount;
+@NoArgsConstructor
+public class UserPredictUPVO {
+    private LocalDate predictTime;
+    private Integer count;
 }

@@ -6,6 +6,7 @@ import com.health.entities.ChatMessage;
 import com.health.entities.ChatMessageD;
 import com.health.service.ChatService;
 import com.health.utils.MessageUtils;
+import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 

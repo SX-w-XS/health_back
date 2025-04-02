@@ -2,4 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.health.mapper.UserMapper">
 
+    <select id="findDailyGrowth" resultType="com.health.vo.UserPredictUPVO">
+       SELECT DATE(create_time) AS predictTime,COUNT(user_id) AS count FROM health.h_user WHERE DATE(create_time) BETWEEN '${start}' AND '${end}' GROUP BY DATE(create_time) ORDER BY DATE(create_time)
+    </select>
 </mapper>

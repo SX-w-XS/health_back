@@ -15,10 +15,7 @@ import com.health.mapper.MessageMapper;
 import com.health.mapper.SuggestionMapper;
 import com.health.mapper.UserMapper;
 import com.health.service.AdminService;
-import com.health.vo.CountUserVO;
-import com.health.vo.SuggestionVO;
-import com.health.vo.UserGrowthVO;
-import com.health.vo.UserVO;
+import com.health.vo.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,10 +23,9 @@ import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -278,12 +274,12 @@ public class AdminServiceImpl implements AdminService {
 
     public List<UserGrowthVO> getGrowthSeries(LocalDate start, LocalDate end) {
         // 查询实际数据
-        List<Object[]> rawData = userMapper.findDailyGrowth(start, end);
-        Map<LocalDate, Integer> dataMap = rawData.stream()
-                .collect(Collectors.toMap(
-                        arr -> LocalDate.parse(arr[0].toString()),
-                        arr -> Integer.parseInt(arr[1].toString())
-                ));
+
+        List<UserPredictUPVO> rawData = userMapper.findDailyGrowth(start, end);
+        Map<LocalDate, Integer> dataMap = new HashMap<>();
+        for (UserPredictUPVO record : rawData) {
+           dataMap.put(record.getPredictTime(), record.getCount());
+        }
 
         // 生成完整日期序列
         List<UserGrowthVO> result = new ArrayList<>();
