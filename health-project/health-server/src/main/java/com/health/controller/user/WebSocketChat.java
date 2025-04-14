@@ -75,9 +75,9 @@ public class WebSocketChat {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ChatMessageD chatMessageD = new ChatMessageD();
+        /*ChatMessageD chatMessageD = new ChatMessageD();
         BeanUtils.copyProperties(chatMessage,chatMessageD);
-        chatService.saveAndSendMessage(chatMessageD);
+        chatService.saveAndSendMessage(chatMessageD);*/
     }
 
     @OnClose
