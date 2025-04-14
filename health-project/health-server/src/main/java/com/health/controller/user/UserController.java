@@ -78,7 +78,7 @@ public class UserController {
         BeanUtils.copyProperties(user, userLoginVO);
         userLoginVO.setUserId(user.getUserId());
         userLoginVO.setToken(token);
-        httpSession.setAttribute("nickname",user.getNickname());
+        httpSession.setAttribute("userId",user.getUserId());
         return Result.success(userLoginVO);
     }
 

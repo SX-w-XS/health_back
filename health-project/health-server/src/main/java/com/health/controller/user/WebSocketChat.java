@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint(value = "/chat",configurator = GetHttpSession.class)
 @Component
 public class WebSocketChat {
-    private  static  final Map<String,Session> onlineUsers =new ConcurrentHashMap<>();
+    private  static  final Map<Integer,Session> onlineUsers =new ConcurrentHashMap<>();
     private  HttpSession httpSession;
 
     @Resource
@@ -40,8 +40,8 @@ public class WebSocketChat {
     @OnOpen
     public void onOpen(Session session, EndpointConfig config)    {
         this.httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
-        String nickname = (String) httpSession.getAttribute("nickname");
-        onlineUsers.put(nickname,session);
+        Integer userId = (Integer) httpSession.getAttribute("userId");
+        onlineUsers.put(userId,session);
 
         String message = MessageUtils.getMessage(true, null, getAllOnlineUser());
         broadcastAllUser(message);
@@ -52,7 +52,7 @@ public class WebSocketChat {
     }
 
     private  void broadcastAllUser(String message){
-        for (Map.Entry<String,Session> entry : onlineUsers.entrySet()) {
+        for (Map.Entry<Integer,Session> entry : onlineUsers.entrySet()) {
             try {
                 entry.getValue().getBasicRemote().sendText(message);
             } catch (Exception e) {
@@ -67,11 +67,11 @@ public class WebSocketChat {
         ChatMessage chatMessage= JSON.parseObject(message, ChatMessage.class);
         String sender = chatMessage.getSender();
         String content = chatMessage.getContent();
-        String nickname = (String) httpSession.getAttribute("nickname");
+        Integer userId = (Integer) httpSession.getAttribute("userId");
         Session session = onlineUsers.get(sender);
 
         try {
-            session.getBasicRemote().sendText(MessageUtils.getMessage(false, nickname, content));
+            session.getBasicRemote().sendText(MessageUtils.getMessage(false, userId, content));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -82,9 +82,9 @@ public class WebSocketChat {
 
     @OnClose
     public void onClose(Session session)  {
-        String nickname = (String) httpSession.getAttribute("nickname");
-        onlineUsers.remove(nickname);
-        String message = MessageUtils.getMessage(true, nickname, getAllOnlineUser());
+        Integer userId = (Integer) httpSession.getAttribute("userId");
+        onlineUsers.remove(userId);
+        String message = MessageUtils.getMessage(true, userId, getAllOnlineUser());
         broadcastAllUser(message);
     }
 

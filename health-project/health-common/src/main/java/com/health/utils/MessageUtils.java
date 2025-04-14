@@ -12,12 +12,12 @@ import com.health.result.ResultMessage;
  * @Version: 1.0
  */
 public class MessageUtils {
-    public static String getMessage(Boolean flag,String nickName ,Object message){
+    public static String getMessage(Boolean flag,Integer userId ,Object message){
         ResultMessage resultMessage = new ResultMessage();
         resultMessage.setFlag(flag);
         resultMessage.setMessage(message);
-        if (nickName != null){
-            resultMessage.setNickName(nickName);
+        if (userId != null){
+            resultMessage.setNickName(userId);
         }
         return JSON.toJSONString(resultMessage);
 

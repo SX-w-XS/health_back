@@ -17,5 +17,5 @@ import lombok.NoArgsConstructor;
 public class ResultMessage {
     private Object message;
     private Boolean flag;
-    private String nickName;
+    private Integer nickName;
 }
