@@ -54,3 +54,5 @@ health:
     user-token-name: authentication
     user-secret-key: health
     user-ttl: 720000000
+file:
+  save-path: E:\idea\newT\health-project\health-server\src\main\resources\upload

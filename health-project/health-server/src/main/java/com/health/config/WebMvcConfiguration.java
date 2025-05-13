@@ -5,6 +5,7 @@ import com.health.interceptor.JwtTokenUserInterceptor;
 import com.health.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -32,6 +33,10 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
     @Autowired
     private JwtTokenUserInterceptor jwtTokenUserInterceptor;
+
+    @Value("${file.save-path}")
+    private String fileSavePath;
+
 
     /**
      * 注册自定义拦截器
@@ -110,6 +115,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
      */
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/upload/**").addResourceLocations("file:" + fileSavePath);
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
