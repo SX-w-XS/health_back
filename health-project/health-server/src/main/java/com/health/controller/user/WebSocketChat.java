@@ -99,6 +99,7 @@ import com.health.entities.ChatMessage;
 import com.health.entities.ChatMessageD;
 import com.health.service.ChatService;
 import com.health.utils.MessageUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -117,6 +118,7 @@ import java.util.logging.Logger;
 /**
  * WebSocket聊天控制器（修复依赖注入问题）
  */
+@Slf4j
 @ServerEndpoint(value = "/chat", configurator = GetHttpSession.class)
 @Component
 public class WebSocketChat implements ApplicationContextAware {
@@ -148,7 +150,6 @@ public class WebSocketChat implements ApplicationContextAware {
 
             onlineUsers.put(currentUserId, session);
             LOGGER.info("用户ID " + currentUserId + " 已连接");
-
             String message = MessageUtils.getMessage(true, null, getAllOnlineUser());
             broadcastAllUser(message);
         } catch (Exception e) {
@@ -170,14 +171,14 @@ public class WebSocketChat implements ApplicationContextAware {
     private void broadcastAllUser(String message) {
         for (Map.Entry<Integer, Session> entry : onlineUsers.entrySet()) {
             Session recipient = entry.getValue();
-            if (recipient != null && recipient.isOpen()) {
-                try {
-                    recipient.getBasicRemote().sendText(message);
-                } catch (IOException e) {
-                    LOGGER.log(Level.WARNING, "向用户ID " + entry.getKey() + " 发送消息失败", e);
-                    onlineUsers.remove(entry.getKey());
-                }
-            }
+//            if (recipient != null && recipient.isOpen()) {
+//                try {
+////                    recipient.getBasicRemote().sendText(message);
+//                } catch (IOException e) {
+//                    LOGGER.log(Level.WARNING, "向用户ID " + entry.getKey() + " 发送消息失败", e);
+//                    onlineUsers.remove(entry.getKey());
+//                }
+//            }
         }
     }
 
@@ -205,7 +206,8 @@ public class WebSocketChat implements ApplicationContextAware {
             ChatMessage chatMessage = JSON.parseObject(message, ChatMessage.class);
 
             // 获取接收者ID（关键修正：假设消息中的接收者字段为receiverId，而非sender）
-            String receiverId = chatMessage.getSender(); // 原代码错误使用sender，此处应改为接收者ID
+            Integer receiverId = chatMessage.getSender(); // 原代码错误使用sender，此处应改为接收者ID
+            log.info("接收者ID: " + receiverId);
             if (receiverId == null) {
                 LOGGER.warning("消息缺少接收者ID: " + message);
                 return;
@@ -220,22 +222,24 @@ public class WebSocketChat implements ApplicationContextAware {
 
             // 检查接收者是否在线
             Session receiverSession = onlineUsers.get(receiverId);
+//            log.info("session:{}",session);
+//            log.info("receiverSession:{}",receiverSession);
             if (receiverSession != null && receiverSession.isOpen()) {
                 // 接收者在线，实时推送消息
-                String response = MessageUtils.getMessage(false, currentUserId, chatMessage.getContent());
+                String response = MessageUtils.getMessage(false, chatMessage.getId(), chatMessage);
                 receiverSession.getBasicRemote().sendText(response);
                 LOGGER.info("消息从用户ID " + currentUserId + " 发送到用户ID " + receiverId);
 
                 // 通知发送者消息已送达
-                session.getBasicRemote().sendText(
-                        MessageUtils.getMessage(false, null, "消息已送达")
-                );
+//                session.getBasicRemote().sendText(
+//                        MessageUtils.getMessage(false, null, "消息已送达")
+//                );
             } else {
                 // 接收者不在线，通知发送者
                 LOGGER.info("用户ID " + receiverId + " 不在线，消息已保存");
-                session.getBasicRemote().sendText(
-                        MessageUtils.getMessage(false, null, "对方不在线，消息已保存")
-                );
+//                session.getBasicRemote().sendText(
+//                        MessageUtils.getMessage(false, null, "对方不在线，消息已保存")
+//                );
             }
         } catch (JSONException e) {
             LOGGER.log(Level.SEVERE, "JSON解析错误: " + message, e);
@@ -258,18 +262,18 @@ public class WebSocketChat implements ApplicationContextAware {
         }
     }
 
-    private void saveChatMessage(ChatMessage chatMessage, String receiverId) {
+    private void saveChatMessage(ChatMessage chatMessage, Integer receiverId) {
         try {
             ChatMessageD chatMessageD = new ChatMessageD();
             BeanUtils.copyProperties(chatMessage, chatMessageD);
 
             // 设置接收者ID和消息状态
-            chatMessageD.setSender(receiverId); // 明确接收者ID
+//            chatMessageD.setSender(receiverId); // 明确接收者ID
             boolean isOnline = onlineUsers.containsKey(receiverId);
 //            chatMessageD.setStatus(isOnline ? "已送达" : "未读");
 
             // 此处chatService通过Spring上下文获取，不再为null
-            chatService.saveAndSendMessage(chatMessageD);
+            chatService.saveAndSendMessage(chatMessage);
             LOGGER.info("消息已保存到数据库: " + chatMessage.getContent());
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "保存消息失败", e);
