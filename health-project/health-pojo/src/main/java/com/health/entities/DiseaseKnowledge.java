@@ -38,20 +38,12 @@ public class DiseaseKnowledge {
      */
     private String prevention;
 
-    /**
-     * 获取慢性病ID
-     *
-     * @return diseaseId - 慢性病ID
-     */
+    private String createTime;
+
     public Integer getDiseaseId() {
         return diseaseId;
     }
 
-    /**
-     * 设置慢性病ID
-     *
-     * @param diseaseId 慢性病ID
-     */
     public void setDiseaseId(Integer diseaseId) {
         this.diseaseId = diseaseId;
     }
@@ -126,5 +118,13 @@ public class DiseaseKnowledge {
      */
     public void setPrevention(String prevention) {
         this.prevention = prevention;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 }

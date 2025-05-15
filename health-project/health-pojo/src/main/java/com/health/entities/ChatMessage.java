@@ -15,13 +15,15 @@ public class ChatMessage {
     @GeneratedValue(generator = "JDBC")
     private Integer id;
 
-    private String type;
+//    private String type;
 
-    private String sender;
+    private Integer sender;
 
-    private Date timestamp;
 
     private String content;
+
+
+    private String timestamp;
 
     /**
      * @return id
@@ -40,42 +42,42 @@ public class ChatMessage {
     /**
      * @return type
      */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * @param type
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
+//    public String getType() {
+//        return type;
+//    }
+//
+//    /**
+//     * @param type
+//     */
+//    public void setType(String type) {
+//        this.type = type;
+//    }
 
     /**
      * @return sender
      */
-    public String getSender() {
+    public Integer getSender() {
         return sender;
     }
 
     /**
      * @param sender
      */
-    public void setSender(String sender) {
+    public void setSender(Integer sender) {
         this.sender = sender;
     }
 
     /**
      * @return timestamp
      */
-    public Date getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
     /**
      * @param timestamp
      */
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 

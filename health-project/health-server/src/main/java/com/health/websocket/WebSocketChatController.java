@@ -34,7 +34,7 @@ public class WebSocketChatController  {
     @MessageMapping("/chat.sendMessage")
     public void handleChatMessage(ChatMessageD message) {
         // 消息处理由ChatService完成
-        chatService.saveAndSendMessage(message);
+//        chatService.saveAndSendMessage(message);
     }
 
     @MessageMapping("/chat.addUser")

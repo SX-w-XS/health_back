@@ -5,8 +5,7 @@ import com.health.dto.MessageAddDTO;
 import com.health.dto.MessageDTO;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
-import com.health.entities.Message;
-import com.health.entities.User;
+import com.health.entities.*;
 import com.health.vo.CountUserVO;
 import com.health.vo.SuggestionVO;
 import com.health.vo.UserGrowthVO;
@@ -45,4 +44,18 @@ public interface AdminService {
     List<UserGrowthVO> getGrowthSeries(LocalDate startDate, LocalDate endDate);
 
     List<UserGrowthVO> simplePredict(List<UserGrowthVO> history, int futureDays);
+
+    List<Review> queryCertify();
+
+    void handleCertify(Review review);
+
+    void insertDoctor(Doctor doctor);
+
+    void addKnowledge(DiseaseKnowledge diseaseKnowledge);
+
+    void deleteKnowledge(int id);
+
+    void updateKnowledge(DiseaseKnowledge diseaseKnowledge);
+
+    List<DiseaseKnowledge> getKnowledge();
 }

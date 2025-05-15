@@ -1,27 +1,28 @@
 package com.health.service.impl;
 
 import com.health.constant.MessageConstant;
+import com.health.dto.UserCertifyDTO;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.dto.UserSignUpDTO;
 import com.health.entities.*;
 import com.health.exception.AccountNotFoundException;
 import com.health.exception.PasswordErrorException;
-import com.health.mapper.ChdRecordMapper;
-import com.health.mapper.MessageMapper;
-import com.health.mapper.UserMapper;
+import com.health.mapper.*;
 import com.health.service.UserService;
+import com.health.vo.ChatApplyVO;
 import com.health.vo.CountDataVO;
-import com.health.vo.UserVO;
+import com.health.vo.DoctorVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @BelongsProject: sky_test
@@ -40,6 +41,21 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private ChdRecordMapper chdRecordMapper;
+
+    @Resource
+    private ChdRecordMapper recordMapper;
+
+    @Resource
+    private CertifyMapper certifyMapper;
+
+    @Resource
+    private ChatMessageMapper chatMessageMapper;
+
+    @Resource
+    private DoctorMapper doctorMapper;
+
+    @Resource
+    private ChatServiceImpl chatServiceImpl;
 
     @Override
     public User login(UserLoginDTO userLoginDTO) {
@@ -96,6 +112,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void certify(UserCertifyDTO userCertifyDTO) {
+        // 1. 获取当前时间（本地时区，如中国的 GMT+8）
+        LocalDateTime now = LocalDateTime.now();
+        // 2. 定义目标格式（空格分隔日期和时间，无毫秒）
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        // 3. 格式化为指定字符串
+        String formattedTime = now.format(formatter);
+        userCertifyDTO.setCreateTime(formattedTime);
+        certifyMapper.insertReview(userCertifyDTO);
+    }
+
+    @Override
+    public List<Review> getCertifyById(String userId) {
+        return certifyMapper.selectReviewsById(userId);
+    }
+
+    @Override
     public List<Message> getMessages() {
         //查询前五条新记录
         return  messageMapper.selectMessageFive();
@@ -121,5 +154,49 @@ public class UserServiceImpl implements UserService {
         return countDataVO;
     }
 
+    @Override
+    public String applyChat(ChatApply chatApply) {
+        if(!chatServiceImpl.checkChat(chatApply.getApplyId(), chatApply.getRecevieId())){
+            // 1. 获取当前时间（本地时区，如中国的 GMT+8）
+            LocalDateTime now = LocalDateTime.now();
+            // 2. 定义目标格式（空格分隔日期和时间，无毫秒）
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            // 3. 格式化为指定字符串
+            String formattedTime = now.format(formatter);
+            chatApply.setCreateTime(formattedTime);
+            int row = chatMessageMapper.insertChatApply(chatApply);
+            if (row > 0) {
+                return "发送申请成功";
+            }else {
+                return "发送申请失败";
+            }
+        }else {
+            return "会话已存在，无需再次申请";
+        }
 
+    }
+
+    @Override
+    public void passApply(Integer id) {
+        chatMessageMapper.updateChatApply(id);
+    }
+
+    @Override
+    public List<ChatApplyVO> getChatApplyList(Integer userId){
+        return chatMessageMapper.getChatApplyList(userId);
+    }
+    @Override
+    public List<ChatApplyVO> getApplyList(Integer userId){
+        return chatMessageMapper.getApplyList(userId);
+    }
+
+    @Override
+    public List<DoctorVO> getAllDoctor() {
+        return doctorMapper.getAllDoctors();
+    }
+
+    @Override
+    public void saveImagePath(String fileUrl) {
+//        userMapper.updateByPrimaryKeySelective(user);
+    }
 }

@@ -5,15 +5,15 @@ import java.util.Date;
 import java.util.List;
 
 public class ChatMessageExample {
-    protected String orderByClause;
+    protected String orderByClause;  // 排序条件
 
-    protected boolean distinct;
+    protected boolean distinct;  // 是否去重
 
     protected List<Criteria> oredCriteria;
 
     public ChatMessageExample() {
         oredCriteria = new ArrayList<>();
-    }
+    } // 初始化条件列表
 
     public void setOrderByClause(String orderByClause) {
         this.orderByClause = orderByClause;

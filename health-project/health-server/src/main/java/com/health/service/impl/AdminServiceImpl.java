@@ -10,12 +10,10 @@ import com.health.dto.UserLoginDTO;
 import com.health.entities.*;
 import com.health.exception.AccountNotFoundException;
 import com.health.exception.PasswordErrorException;
-import com.health.mapper.ChdRecordMapper;
-import com.health.mapper.MessageMapper;
-import com.health.mapper.SuggestionMapper;
-import com.health.mapper.UserMapper;
+import com.health.mapper.*;
 import com.health.service.AdminService;
 import com.health.vo.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +33,7 @@ import java.util.stream.Collectors;
  * @Description: TODO
  * @Version: 1.0
  */
+@Slf4j
 @Service
 public class AdminServiceImpl implements AdminService {
 
@@ -49,6 +48,15 @@ public class AdminServiceImpl implements AdminService {
 
     @Resource
     private ChdRecordMapper chdRecordMapper;
+
+    @Resource
+    private CertifyMapper certifyMapper;
+
+    @Resource
+    private DiseaseKnowledgeMapper diseaseKnowledgeMapper;
+
+    @Resource
+    private DoctorMapper doctorMapper;
 
     @Override
     public User login(UserLoginDTO userLoginDTO) {
@@ -269,8 +277,39 @@ public class AdminServiceImpl implements AdminService {
         return countUserVO;
     }
 
+    @Override
+    public List<Review> queryCertify(){
+        return certifyMapper.selectAllReviews();
+    }
 
+    @Override
+    public void handleCertify(Review review) {
+        log.info("{}",review.getStatus());
+        if (review.getStatus() == 1){
+            certifyMapper.updateUserRole((Integer) review.getFilerId());
+        }
+        // 1. 获取当前时间（本地时区，如中国的 GMT+8）
+        LocalDateTime now = LocalDateTime.now();
+        // 2. 定义目标格式（空格分隔日期和时间，无毫秒）
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        // 3. 格式化为指定字符串
+        String formattedTime = now.format(formatter);
+        review.setEndTime(formattedTime);
+        certifyMapper.updateReview(review);
+        //根据id查询用户信息，将对应信息插入到医生信息表
+        User user = userMapper.selectByPrimaryKey((Integer) review.getFilerId());
+        Doctor doctor = new Doctor();
+        doctor.setDoctorId(user.getUserId());
+        doctor.setDoctorAge(user.getUserAge());
+        doctor.setDoctorName(user.getNickname());
+        doctor.setDoctorSex(user.getUserSex());
+        insertDoctor(doctor);
+    }
 
+    @Override
+    public void insertDoctor(Doctor doctor) {
+        doctorMapper.insertDoctor(doctor);
+    }
 
     public List<UserGrowthVO> getGrowthSeries(LocalDate start, LocalDate end) {
         // 查询实际数据
@@ -328,5 +367,34 @@ public class AdminServiceImpl implements AdminService {
 
         return forecast;
     }
+
+    @Override
+    public void addKnowledge(DiseaseKnowledge diseaseKnowledge){
+        // 1. 获取当前时间（本地时区，如中国的 GMT+8）
+        LocalDateTime now = LocalDateTime.now();
+        // 2. 定义目标格式（空格分隔日期和时间，无毫秒）
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        // 3. 格式化为指定字符串
+        String formattedTime = now.format(formatter);
+        diseaseKnowledge.setCreateTime(formattedTime);
+        diseaseKnowledgeMapper.insertKnowledge(diseaseKnowledge);
+    }
+
+    @Override
+    public void deleteKnowledge(int id){
+        diseaseKnowledgeMapper.deleteKnowledgeById(id);
+    }
+
+    @Override
+    public void updateKnowledge(DiseaseKnowledge diseaseKnowledge) {
+        diseaseKnowledgeMapper.updateKnowledge(diseaseKnowledge);
+    }
+
+    @Override
+    public List<DiseaseKnowledge> getKnowledge() {
+        return diseaseKnowledgeMapper.selectAllKnowledge();
+    }
+
+
 }
 

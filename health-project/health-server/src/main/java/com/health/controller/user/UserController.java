@@ -3,20 +3,16 @@ package com.health.controller.user;
 import com.github.pagehelper.PageInfo;
 import com.health.constant.JwtClaimsConstant;
 import com.health.context.BaseContext;
-import com.health.dto.MessageDTO;
-import com.health.dto.UserDTO;
-import com.health.dto.UserLoginDTO;
-import com.health.dto.UserSignUpDTO;
-import com.health.entities.ChatMessage;
-import com.health.entities.ChatMessageD;
-import com.health.entities.Message;
-import com.health.entities.User;
+import com.health.dto.*;
+import com.health.entities.*;
 import com.health.properties.JwtProperties;
 import com.health.result.Result;
 import com.health.service.AdminService;
 import com.health.service.ChatService;
 import com.health.service.UserService;
 import com.health.utils.JwtUtil;
+import com.health.vo.ChatMessageVO;
+import com.health.vo.DoctorVO;
 import com.health.vo.UserLoginVO;
 import com.health.vo.UserVO;
 import io.swagger.annotations.Api;
@@ -26,13 +22,17 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @BelongsProject: sky_test
@@ -136,6 +136,93 @@ public class UserController {
     public Result countData(Integer userID) {
         return Result.success(userService.countData(userID));
     }
+
+    @PostMapping("/certify")
+    @ApiOperation(value = "提交审核信息")
+    public Result certify(@RequestBody UserCertifyDTO usercertifyDTO) {
+        log.info("用户提交审核信息：{}", usercertifyDTO);
+        userService.certify(usercertifyDTO);
+        return Result.success("提交成功");
+    }
+
+    @PostMapping("/getCertifyById")
+    @ApiOperation(value = "查询自身提交的审核信息")
+    public Result getCertifyById(String userId) {
+        log.info("用户查询审核信息：{}", userId);
+        userService.getCertifyById(userId);
+        return Result.success(userService.getCertifyById(userId));
+    }
+
+    @PostMapping("/getAllKnowledge")
+    @ApiOperation(value = "查询科普知识")
+    public Result getAllKnowledge() {
+        return Result.success(adminService.getKnowledge());
+    }
+
+    @PostMapping("/applyChat")
+    @ApiOperation(value = "申请聊天")
+    public Result applyChat(@RequestBody ChatApply chatApply) {
+        log.info("用户申请聊天：{}", chatApply);
+//        chatService.applyChat(chatMessage);
+        return Result.success(userService.applyChat(chatApply));
+    }
+    @PostMapping("/passApply")
+    @ApiOperation(value = "通过申请")
+    public Result passApply() {
+        return Result.success(adminService.queryCertify());
+    }
+    @PostMapping("/getApplyById")
+    @ApiOperation(value = "用户获取自身会话列表")
+    public Result getApplyById(Integer userId) {
+        log.info("获取会话列表");
+        return Result.success(userService.getChatApplyList(userId));
+    }
+
+    @PostMapping("/getApplyList")
+    @ApiOperation(value = "医生获取会话列表")
+    public Result getApplyList(Integer userId) {
+        return Result.success(userService.getApplyList(userId));
+    }
+
+    @PostMapping("/passChatApply")
+    @ApiOperation(value = "通过会话申请")
+    public Result passApply(Integer Id) {
+//        return Result.success(userService.getChatApplyList(userId));
+        return Result.success("操作成功");
+    }
+
+    @PostMapping("/getHistoryMessage")
+    @ApiOperation(value = "获取聊天记录")
+    public Result getHistoryMessage(Integer sendId,Integer receiveId) {
+        log.info("获取聊天记录");
+        List<ChatMessageVO> chatMessages = chatService.getHistoryMessage(sendId, receiveId);
+        if (chatMessages == null) {
+            return Result.error("没有聊天记录");
+        }
+        return Result.success(chatMessages);
+    }
+
+    @PostMapping("/getAllDoctor")
+    @ApiOperation(value = "获取所有医生")
+    public Result getAllDoctor() {
+        List<DoctorVO> doctorVOList = userService.getAllDoctor();
+        if (doctorVOList == null) {
+            return Result.error("没有医生信息");
+        }
+        return Result.success(doctorVOList);
+    }
+
+    @PostMapping("/checkChat")
+    @ApiOperation(value = "检查是否存在会话")
+    public Result checkChat(Integer senderId,Integer receiverId) {
+        log.info("检查会话");
+        if (chatService.checkChat(senderId, receiverId)) {
+            return Result.success("会话已存在");
+        } else {
+            return Result.error("会话不存在");
+        }
+    }
+
 
 
 }

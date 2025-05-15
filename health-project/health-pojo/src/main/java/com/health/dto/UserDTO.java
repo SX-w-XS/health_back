@@ -2,11 +2,11 @@ package com.health.dto;
 
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.Column; //jpa注释，指定属性和数据库映射关系
+import javax.persistence.Id;  //标识该属性是数据库表的 主键
+import javax.persistence.Table;  //指定该类对应的数据库表名
+import java.io.Serializable;  //使对象可在网络传输或持久化存储
+import java.util.Date;  //用于表示注册日期（registrationDate）的日期类型
 
 /**
  * 表名：h_user
@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @Getter
 @Table(name = "h_user")
-public class UserDTO implements Serializable {
+public class UserDTO implements Serializable {  //实现序列化接口，确保对象可序列化
     /**
      * 用户ID
      * -- GETTER --
@@ -23,8 +23,8 @@ public class UserDTO implements Serializable {
      * @return userId - 用户ID
 
      */
-    @Id
-    @Column(name = "user_id")
+    @Id  //标记该属性是表的主键
+    @Column(name = "user_id")  //指定数据库列名为 user_id
     private Integer userId;
 
     /**
@@ -35,6 +35,7 @@ public class UserDTO implements Serializable {
      * @return nickname - 用户昵称
 
      */
+    //无 @Column 注解：若属性名与列名一致（如 nickname 对应表列 nickname），可省略 @Column
     private String nickname;
 
     /**

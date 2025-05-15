@@ -2,7 +2,7 @@ package com.health.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+import lombok.Data;  //通过注解自动生成 Java 类的 getter、setter、toString、equals 和 hashCode 等方法
 
 import javax.persistence.Column;
 import java.util.Date;
@@ -15,7 +15,7 @@ import java.util.Date;
  * @Version: 1.0
  */
 @Data
-@ApiModel(description = "添加信息")
+@ApiModel(description = "添加信息") //Swagger 的注解，用于为该类添加描述信息，在生成 API 文档时，会显示该描述信息
 public class MessageAddDTO {
     /**
      * 标题

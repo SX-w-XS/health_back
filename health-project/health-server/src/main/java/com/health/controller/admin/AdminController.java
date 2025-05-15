@@ -7,6 +7,8 @@ import com.health.dto.MessageAddDTO;
 import com.health.dto.MessageDTO;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
+import com.health.entities.DiseaseKnowledge;
+import com.health.entities.Review;
 import com.health.entities.User;
 import com.health.properties.JwtProperties;
 import com.health.result.Result;
@@ -209,4 +211,47 @@ public class AdminController {
         ));
     }
 
+    @PostMapping("/queryCertify")
+    @ApiOperation(value = "获取所有审核信息")
+    public Result queryCertify() {
+        log.info("查询用户提交的审核信息");
+        adminService.queryCertify();
+        return Result.success(adminService.queryCertify());
+    }
+
+    @PostMapping("/handleCertify")
+    @ApiOperation(value = "审核信息")
+    public Result handleCertify(@RequestBody Review review) {
+        log.info("审核用户提交的审核信息");
+        adminService.handleCertify(review);
+        return Result.success("操作成功");
+    }
+
+    @PostMapping("/addKnowledge")
+    @ApiOperation(value = "添加科普知识")
+    public Result addKnowledge(@RequestBody DiseaseKnowledge knowledge) {
+        log.info("添加科普知识: {}", knowledge);
+        adminService.addKnowledge(knowledge);
+        return Result.success("添加成功");
+    }
+
+    @PostMapping("/deleteKnowledge")
+    @ApiOperation(value = "删除科普知识")
+    public Result deleteKnowledge(int id) {
+        adminService.deleteKnowledge(id);
+        return Result.success("删除成功");
+    }
+
+    @PostMapping("/updateKnowledge")
+    @ApiOperation(value = "修改科普知识")
+    public Result update(@RequestBody DiseaseKnowledge diseaseKnowledge){
+        adminService.updateKnowledge(diseaseKnowledge);
+        return Result.success("修改成功");
+    }
+
+    @PostMapping("/queryKnowledge")
+    @ApiOperation(value = "查询科普知识")
+    public Result queryKnowledge() {
+        return Result.success(adminService.getKnowledge());
+    }
 }
