@@ -205,6 +205,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Medicine> getMedical() {
-        return medicineMapper.selectAll();
+
+
+        return medicineMapper.selectALLMedicine();
     }
 }
