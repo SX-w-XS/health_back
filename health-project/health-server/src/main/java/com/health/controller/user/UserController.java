@@ -224,5 +224,9 @@ public class UserController {
     }
 
 
-
+    @PostMapping("/getMedical")
+    @ApiOperation(value = "获取药物信息")
+    public Result getMedical()  {
+        return Result.success(userService.getMedical());
+    }
 }

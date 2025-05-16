@@ -37,6 +37,9 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Resource
+    private MedicineMapper medicineMapper;
+
+    @Resource
     private MessageMapper messageMapper;
 
     @Resource
@@ -198,5 +201,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveImagePath(String fileUrl) {
 //        userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public List<Medicine> getMedical() {
+        return medicineMapper.selectAll();
     }
 }

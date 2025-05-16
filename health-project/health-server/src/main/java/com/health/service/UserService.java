@@ -4,10 +4,7 @@ import com.health.dto.UserCertifyDTO;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.dto.UserSignUpDTO;
-import com.health.entities.ChatApply;
-import com.health.entities.Message;
-import com.health.entities.Review;
-import com.health.entities.User;
+import com.health.entities.*;
 import com.health.vo.ChatApplyVO;
 import com.health.vo.CountDataVO;
 import com.health.vo.DoctorVO;
@@ -44,4 +41,6 @@ public interface UserService {
     void passApply(Integer id);
     List<DoctorVO> getAllDoctor();
     void saveImagePath(String fileUrl);
+
+    List<Medicine> getMedical();
 }
