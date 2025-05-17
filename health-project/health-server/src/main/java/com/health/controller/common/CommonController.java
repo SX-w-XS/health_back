@@ -34,7 +34,7 @@ public class CommonController {
         System.out.println(name);
         String originalFilename = file.getOriginalFilename();
         System.out.println(originalFilename);
-
+        String FILE;;
         try {
             InputStream in=file.getInputStream();
             BufferedInputStream bis=new BufferedInputStream(in);
@@ -47,8 +47,10 @@ public class CommonController {
                 upload.mkdirs();
             }
             // 将文件写入到指定路径
-            BufferedOutputStream out =new BufferedOutputStream(new FileOutputStream(upload.getAbsoluteFile()
-            +"/"+ UUID.randomUUID().toString()+originalFilename.substring(originalFilename.lastIndexOf("."))));
+            String filename=upload.getAbsoluteFile()
+                    +"/"+ UUID.randomUUID().toString()+originalFilename.substring(originalFilename.lastIndexOf("."));
+            FILE = filename;
+            BufferedOutputStream out =new BufferedOutputStream(new FileOutputStream(filename));
             byte[] bytes = new byte[1024 * 100];
             int readCount = 0;
             while((readCount = in.read(bytes)) != -1){
@@ -62,6 +64,6 @@ public class CommonController {
         } catch (IOException e) {
             throw new ImgErrorException("图片上传失败");
         }
-        return  Result.success("上传成功");
+        return  Result.success(FILE);
     }
 }
