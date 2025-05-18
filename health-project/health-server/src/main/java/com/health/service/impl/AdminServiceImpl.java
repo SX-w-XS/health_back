@@ -40,7 +40,7 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
+    @Resource
     private MessageMapper messageMapper;
 
     @Resource
@@ -57,6 +57,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Resource
     private DoctorMapper doctorMapper;
+
+    @Resource
+    private MedicineMapper medicineMapper;
 
     @Override
     public User login(UserLoginDTO userLoginDTO) {
@@ -395,6 +398,21 @@ public class AdminServiceImpl implements AdminService {
         return diseaseKnowledgeMapper.selectAllKnowledge();
     }
 
+    @Override
+    public void addMedicine(Medicine medicine) {
+        System.out.println(medicine.getUseage());
+        medicineMapper.insertMedicine(medicine);
 
+    }
+
+    @Override
+    public void deleteMedicine(Integer medicineId) {
+        medicineMapper.deleteMedicine(medicineId);
+    }
+
+    @Override
+    public void updateMedicine(String path,String medicalName) {
+        medicineMapper.updateMedicine(path,medicalName);
+    }
 }
 

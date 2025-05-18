@@ -43,4 +43,7 @@ public interface UserService {
     void saveImagePath(String fileUrl);
 
     List<Medicine> getMedical();
+
+    void saveAvtorPath(String filePath,Integer userId);
+    void saveApplyPath(String filePath,Integer userId);
 }

@@ -58,4 +58,10 @@ public interface AdminService {
     void updateKnowledge(DiseaseKnowledge diseaseKnowledge);
 
     List<DiseaseKnowledge> getKnowledge();
+
+    void addMedicine(Medicine medicine);
+
+    void deleteMedicine(Integer medicineId);
+
+    void updateMedicine(String path,String medicalName);
 }

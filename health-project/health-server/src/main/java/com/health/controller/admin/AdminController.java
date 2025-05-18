@@ -8,6 +8,7 @@ import com.health.dto.MessageDTO;
 import com.health.dto.UserDTO;
 import com.health.dto.UserLoginDTO;
 import com.health.entities.DiseaseKnowledge;
+import com.health.entities.Medicine;
 import com.health.entities.Review;
 import com.health.entities.User;
 import com.health.properties.JwtProperties;
@@ -253,5 +254,33 @@ public class AdminController {
     @ApiOperation(value = "查询科普知识")
     public Result queryKnowledge() {
         return Result.success(adminService.getKnowledge());
+    }
+
+    //药物相关
+    @PostMapping("/addMedicine")
+    @ApiOperation(value = "添加药物")
+    public Result addMedicine(@RequestBody Medicine medicine) {
+        log.info("添加药物: {}", medicine);
+        adminService.addMedicine(medicine);
+        return Result.success("添加成功");
+    }
+    @PostMapping("/deleteMedicine")
+    @ApiOperation(value = "删除药物")
+    public Result deleteMedicine(@RequestParam("medicineId") Integer medicineId) {
+        log.info("删除药物: {}", medicineId);
+        adminService.deleteMedicine(medicineId);
+        return Result.success("删除成功");
+    }
+    @PostMapping("/updateMedicine")
+    @ApiOperation(value = "修改药物")
+    public Result updateMedicine(@RequestBody Medicine medicine) {
+        log.info("修改药物: {}", medicine);
+        return Result.success("修改成功");
+    }
+    @PostMapping("/queryMedicine")
+    @ApiOperation(value = "查询药物")
+    public Result<List<Medicine>> queryMedicine() {
+        log.info("查询药物");
+        return Result.success(userService.getMedical());
     }
 }

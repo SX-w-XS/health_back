@@ -33,7 +33,7 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
     @Resource
@@ -208,5 +208,14 @@ public class UserServiceImpl implements UserService {
 
 
         return medicineMapper.selectALLMedicine();
+    }
+
+    @Override
+    public void saveAvtorPath(String filePath,Integer userId) {
+        userMapper.updateUserImg(filePath,userId);
+    }
+    @Override
+    public void saveApplyPath(String filePath,Integer userId) {
+        userMapper.updateApplyImg(filePath,userId);
     }
 }

@@ -5,6 +5,7 @@ import com.health.entities.UserExample;
 import com.health.vo.UserPredictUPVO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.time.LocalDate;
@@ -23,4 +24,8 @@ public interface UserMapper extends Mapper<User> {
 
     List<UserPredictUPVO> findDailyGrowth(@Param("start") LocalDate start,
                                           @Param("end") LocalDate end);
+    @Update("update h_user set user_img=#{userImg} where user_id=#{userId}")
+    void updateUserImg(String userImg,Integer userId);
+    @Update("update review set img = #{img} where filer_id = #{userId}")
+    void updateApplyImg(String img,Integer userId);
 }
