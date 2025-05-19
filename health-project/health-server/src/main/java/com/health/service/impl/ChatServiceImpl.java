@@ -44,11 +44,6 @@ public class ChatServiceImpl implements ChatService {
 
     public void saveAndSendMessage(ChatMessage message) {
         chatMessageMapper.sendAndSaveMessage(message);
-//        message.setTimestamp(LocalDateTime.now());
-//        ChatMessage chatMessage=new ChatMessage();
-//        BeanUtils.copyProperties(message,chatMessage);
-//        chatMessageMapper.insert(chatMessage);
-//        messagingTemplate.convertAndSend("/topic/messages", message);
     }
 
     public List<ChatMessageVO> getHistoryMessage(Integer sendId, Integer receiveId) {
@@ -57,9 +52,9 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public boolean checkChat(Integer applyId, Integer recevieId) {
-        ChatApply apply = new ChatApply();
-        apply = chatMessageMapper.checkChat(applyId, recevieId);
+        // 检查聊天申请记录是否存在
+        ChatApply apply = chatMessageMapper.checkChat(applyId, recevieId);
         return apply != null;
-//        apply = chatMessageMapper.selectByPrimaryKey(applyId);
+
     }
 }

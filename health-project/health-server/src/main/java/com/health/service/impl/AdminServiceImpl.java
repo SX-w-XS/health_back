@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
     @Resource
@@ -61,6 +61,11 @@ public class AdminServiceImpl implements AdminService {
     @Resource
     private MedicineMapper medicineMapper;
 
+    /**
+     * 用户登录功能
+     * @param userLoginDTO 包含用户名和密码的登录信息
+     * @return 登录成功的用户信息
+     */
     @Override
     public User login(UserLoginDTO userLoginDTO) {
         String username = userLoginDTO.getUsername();
@@ -84,6 +89,11 @@ public class AdminServiceImpl implements AdminService {
         return user;
     }
 
+    /**
+     * 根据用户ID查询用户信息
+     * @param id 用户ID
+     * @return 用户信息封装为 UserVO 对象
+     */
     @Override
     public UserVO queryById(String id) {
         User user = userMapper.selectByPrimaryKey(id);
@@ -95,6 +105,10 @@ public class AdminServiceImpl implements AdminService {
         return null;
     }
 
+    /**
+     * 根据用户ID删除用户
+     * @param id 用户ID
+     */
     @Override
     public void deleteById(String id) {
         try {
@@ -105,6 +119,10 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
+    /**
+     * 批量删除用户
+     * @param ids 用户ID数组
+     */
     @Override
     public void deleteBatch(String[] ids) {
         try {
@@ -116,6 +134,13 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
+    /**
+     * 分页查询所有非管理员用户
+     * @param pageNum 当前页码
+     * @param pageSize 每页显示的记录数
+     * @param limit 限制条件（未使用）
+     * @return 分页后的用户信息
+     */
     @Override
     public PageInfo<User> queryAll(int pageNum, int pageSize,int limit) {
         PageHelper.startPage(pageNum,pageSize);
@@ -131,6 +156,13 @@ public class AdminServiceImpl implements AdminService {
         return pageInfo;
     }
 
+    /**
+     * 分页查询所有消息
+     * @param pageNum 当前页码
+     * @param pageSize 每页显示的记录数
+     * @param limit 限制条件（未使用）
+     * @return 分页后的消息信息
+     */
     @Override
     public PageInfo<Message> queryAllMessage(int pageNum, int pageSize, int limit) {
         PageHelper.startPage(pageNum,pageSize);
@@ -145,6 +177,11 @@ public class AdminServiceImpl implements AdminService {
         return pageInfo;
     }
 
+    /**
+     * 根据条件查询用户信息
+     * @param user 包含查询条件的 UserDTO 对象
+     * @return 分页后的用户信息封装为 UserVO 对象
+     */
     @Override
     public PageInfo<UserVO> queryUser(UserDTO user) {
         UserExample userExample = new UserExample();
@@ -202,6 +239,11 @@ public class AdminServiceImpl implements AdminService {
         return null;
     }
 
+    /**
+     * 根据条件查询消息
+     * @param messageDTO 包含查询条件的 MessageDTO 对象
+     * @return 分页后的消息信息
+     */
     @Override
     public PageInfo<Message> queryMessage(MessageDTO messageDTO) {
         MessageExample messageExample = new MessageExample();
@@ -224,6 +266,10 @@ public class AdminServiceImpl implements AdminService {
         return null;
     }
 
+    /**
+     * 添加新消息
+     * @param messageAddDTO 包含消息内容的 DTO 对象
+     */
     @Override
     public void addMessage(MessageAddDTO messageAddDTO) {
         Message message = new Message();
@@ -232,7 +278,10 @@ public class AdminServiceImpl implements AdminService {
         messageMapper.insert(message);
     }
 
-
+    /**
+     * 批量删除消息
+     * @param ids 消息ID列表
+     */
     @Override
     public void deleteMessage(List<Integer> ids) {
         MessageExample messageExample = new MessageExample();
@@ -241,6 +290,10 @@ public class AdminServiceImpl implements AdminService {
         messageMapper.deleteByExample(messageExample);
 }
 
+    /**
+     * 获取所有建议信息
+     * @return 建议信息列表封装为 SuggestionVO 对象
+     */
     @Override
     public  List<SuggestionVO> getSuggestion() {
 
@@ -255,6 +308,10 @@ public class AdminServiceImpl implements AdminService {
         return suggestionVOS;
     }
 
+    /**
+     * 添加新用户
+     * @param userAddDTO 包含用户信息的 DTO 对象
+     */
     @Override
     public void addUser(UserDTO userAddDTO) {
         User user = new User();
@@ -266,6 +323,10 @@ public class AdminServiceImpl implements AdminService {
         userMapper.insert(user);
     }
 
+    /**
+     * 查询用户统计信息
+     * @return 用户统计信息封装为 CountUserVO 对象
+     */
     @Override
     public CountUserVO queryCount() {
         CountUserVO countUserVO = new CountUserVO();
@@ -280,11 +341,19 @@ public class AdminServiceImpl implements AdminService {
         return countUserVO;
     }
 
+    /**
+     * 查询认证申请记录
+     * @return 认证申请记录列表
+     */
     @Override
     public List<Review> queryCertify(){
         return certifyMapper.selectAllReviews();
     }
 
+    /**
+     * 处理认证申请
+     * @param review 包含认证申请信息的 Review 对象
+     */
     @Override
     public void handleCertify(Review review) {
         log.info("{}",review.getStatus());
@@ -309,11 +378,21 @@ public class AdminServiceImpl implements AdminService {
         insertDoctor(doctor);
     }
 
+    /**
+     * 插入医生信息
+     * @param doctor 包含医生信息的 Doctor 对象
+     */
     @Override
     public void insertDoctor(Doctor doctor) {
         doctorMapper.insertDoctor(doctor);
     }
 
+    /**
+     * 获取用户增长数据
+     * @param start 起始日期
+     * @param end 结束日期
+     * @return 用户增长数据列表
+     */
     public List<UserGrowthVO> getGrowthSeries(LocalDate start, LocalDate end) {
         // 查询实际数据
 
@@ -340,11 +419,12 @@ public class AdminServiceImpl implements AdminService {
 
         return result;
     }
+
     /**
-     * 简单线性预测
-     * @param history 历史数据（至少包含7天）
+     * 简单线性预测用户增长
+     * @param history 历史用户增长数据
      * @param days 预测天数
-     * @return 预测结果（包含累计总数）
+     * @return 预测结果列表
      */
     public List<UserGrowthVO> simplePredict(List<UserGrowthVO> history, int days) {
         // 计算日均增长
@@ -371,6 +451,10 @@ public class AdminServiceImpl implements AdminService {
         return forecast;
     }
 
+    /**
+     * 添加疾病知识
+     * @param diseaseKnowledge 包含疾病知识信息的对象
+     */
     @Override
     public void addKnowledge(DiseaseKnowledge diseaseKnowledge){
         // 1. 获取当前时间（本地时区，如中国的 GMT+8）
@@ -383,21 +467,37 @@ public class AdminServiceImpl implements AdminService {
         diseaseKnowledgeMapper.insertKnowledge(diseaseKnowledge);
     }
 
+    /**
+     * 删除疾病知识
+     * @param id 疾病知识ID
+     */
     @Override
     public void deleteKnowledge(int id){
         diseaseKnowledgeMapper.deleteKnowledgeById(id);
     }
 
+    /**
+     * 更新疾病知识
+     * @param diseaseKnowledge 包含更新信息的对象
+     */
     @Override
     public void updateKnowledge(DiseaseKnowledge diseaseKnowledge) {
         diseaseKnowledgeMapper.updateKnowledge(diseaseKnowledge);
     }
 
+    /**
+     * 获取所有疾病知识
+     * @return 疾病知识列表
+     */
     @Override
     public List<DiseaseKnowledge> getKnowledge() {
         return diseaseKnowledgeMapper.selectAllKnowledge();
     }
 
+    /**
+     * 添加药品信息
+     * @param medicine 包含药品信息的对象
+     */
     @Override
     public void addMedicine(Medicine medicine) {
         System.out.println(medicine.getUseage());
@@ -405,11 +505,20 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
+    /**
+     * 删除药品信息
+     * @param medicineId 药品ID
+     */
     @Override
     public void deleteMedicine(Integer medicineId) {
         medicineMapper.deleteMedicine(medicineId);
     }
 
+    /**
+     * 更新药品图片路径
+     * @param path 图片路径
+     * @param medicalName 药品名称
+     */
     @Override
     public void updateMedicine(String path,String medicalName) {
         medicineMapper.updateMedicine(path,medicalName);
